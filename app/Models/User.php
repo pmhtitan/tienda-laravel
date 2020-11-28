@@ -40,4 +40,22 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /* Relationships */
+
+    // Uno a muchos
+    public function pedidos(){
+        return $this->hasMany('App\Models\Pedido');
+    }
+
+    // Uno a muchos
+    public function datosFacturacion(){
+        return $this->hasMany('App\Models\DatosFacturacion');
+    }
+
+    // One to One
+    public function carrito(){
+        return $this->hasOne('App\Models\Carrito');
+    }
+
 }
