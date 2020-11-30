@@ -15,12 +15,12 @@ class LineasPedidos extends Model
 
    // Many to one
     public function pedido(){
-        return $this->belongsTo('App\Models\Pedido');
+        return $this->belongsTo('App\Models\Pedido', 'pedido_id');
     }
 
     // Many to one
     public function producto(){
-        return $this->belongsTo('App\Models\Producto');
+        return $this->belongsTo('App\Models\Producto', 'producto_id');
     }
 
 }

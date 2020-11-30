@@ -15,11 +15,11 @@ class LineasCarrito extends Model
 
     // Many to one
     public function carrito(){
-        return $this->belongsTo('App\Models\Carrito');
+        return $this->belongsTo('App\Models\Carrito', 'carrito_id');
     }
 
     // Many to one
     public function producto(){
-        return $this->belongsTo('App\Models\Producto');
+        return $this->belongsTo('App\Models\Producto', 'producto_id');
     }
 }
