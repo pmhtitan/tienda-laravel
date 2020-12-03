@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProductoController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,9 +15,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('landing');
 });
 
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+/* Crear Producto */ 
+Route::get('/producto/crear', [ProductoController::class, 'viewCrearProducto'])->name('producto.crear')->middleware('admin'); //funciona
+Route::post('/producto/creado', [ProductoController::class, 'crearProducto'])->name('producto.creado')->middleware('admin');
+
+

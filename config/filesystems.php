@@ -55,6 +55,15 @@ return [
             'visibility' => 'public',
         ],
 
+        /* Configurado disco para el almacenamiento de imagenes de productos */
+
+        'imagenes_productos' => [
+            'driver' => 'local',
+            'root' => storage_path('app/imagenes_productos'),
+            'url' => env('APP_URL').'/storage',
+            'visibility' => 'public',
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
