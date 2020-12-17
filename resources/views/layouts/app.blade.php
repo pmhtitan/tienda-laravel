@@ -63,6 +63,10 @@
                                 <a class="dropdown-item" href="{{ route('producto.crear') }}">
                                         Crear producto
                                 </a>
+
+                                <a class="dropdown-item" href="{{ route('categoria.crear') }}">
+                                        Crear categoria
+                                </a>
                                 @endif
 
                                     <a class="dropdown-item" href="{{ route('logout') }}"

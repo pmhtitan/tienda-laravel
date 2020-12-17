@@ -123,3 +123,45 @@
 }
 
 /* /--/ */
+
+.fw600{
+    font-weight: 600;
+}
+
+.producto-descripcion-destacados{
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+/* Mario fix cajas */
+.card > a{
+    height: 244px;
+    display: block;
+}
+.card-img-top{
+    width: auto;
+    height: 100%;
+}
+
+.parent{
+    display: flex;
+    height: 244px;
+}
+.child{
+    margin: auto;
+}
+
+/* Gestion productos - botones */
+@media only screen and (max-width: 800px){
+    .button-nospacing-mobileProd{
+        margin-top:10%!important;
+    }
+}
+
+@media only screen and (min-width: 800px){
+
+    .td-caja-gestionProd{
+        display: inline-flex!important;
+    } 
+}

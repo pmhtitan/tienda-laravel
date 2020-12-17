@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Producto;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,6 +24,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+
+        $productos = Producto::orderBy('id', 'desc')->limit(9);
+
+        return view('home', [
+            'productos' => $productos
+        ]);
     }
 }
