@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CarritoController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\DatosFacturacionController;
 use App\Http\Controllers\ProductoController;
@@ -49,6 +50,19 @@ Route::post('/categoria/editado', [CategoriaController::class, 'editado'])->name
 /* Datos Facturacion */
 Route::get('/cuenta/mis-datos', [DatosFacturacionController::class, 'gestionDatos'])->name('facturacion.datos')->middleware('auth');
 Route::post('/cuenta/guardar-facturacion', [DatosFacturacionController::class, 'guardarFacturacion'])->name('facturacion.guardar')->middleware('auth');
+
+/* Carrito */
+Route::get('/carrito', [CarritoController::class, 'index'])->name('carrito.index');
+Route::get('/carrito-add/{id}', [CarritoController::class, 'addItem'])->name('carrito.add');
+Route::get('/carrito-remove/{index}', [CarritoController::class, 'removeItem'])->name('carrito.remove');
+Route::get('/ajax-request', [CarritoController::class, 'guardar_quantity_session'])->name('carrito.ajax');
+Route::get('/carrito-up/{index}', [CarritoController::class, 'upItem'])->name('carrito.up');
+Route::get('/carrito-down/{index}', [CarritoController::class, 'downItem'])->name('carrito.down');
+Route::get('/carrito-delete', [CarritoController::class, 'delete_all'])->name('carrito.delete');
+
+/* Ajax */
+Route::get('/ajax_request', [CarritoController::class, 'guardar_quantity_session'])->name('carrito.ajax');
+
 
 
 

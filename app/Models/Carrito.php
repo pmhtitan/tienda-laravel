@@ -15,11 +15,11 @@ class Carrito extends Model
 
     // Relación Uno a Uno
     public function user(){
-        return $this->hasOne('App\Models\User', 'user_id');
+        return $this->hasOne('App\Models\User', 'id'); // tuve que cambiar esto
    }
 
    // Relacion uno a muchos
    public function lineascarrito(){
-       return $this->hasMany('App\Models\LineasCarrito');
+       return $this->hasMany('App\Models\LineasCarrito', 'carrito_id');
    }
 }

@@ -29,13 +29,16 @@
                                     </p>                                   
                                     <div class="buy d-flex justify-content-between align-items-center">
                                         <div class="price text-success"><h5 class="mt-4">{{ $producto->precio }} €</h5></div>
-                                        <a href="#" class="btn btn-danger mt-3"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+                                        <a href="{{ route('carrito.add', ['id' => $producto->id]) }}" class="btn btn-danger mt-3 btnAjax"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
                                     </div>
                                 </div>
                             </div>                            
                         </div>
                         @endforeach
                     </div>
+
+                    <div id="path-ajax" data-path="{{route('carrito.ajax')}}"></div>
+                    <input type="number" value="1" id="quantity_input" style="display:none;"/>
                 </div>
             </div>
         </div>
