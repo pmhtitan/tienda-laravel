@@ -104,7 +104,7 @@ class CarritoController extends Controller
                                                             ->where('producto_id', $id)->count();
 
                 $linea_carrito_seleccionado = LineasCarrito::where('carrito_id', $cart->id)
-                                                            ->where('producto_id', $id)->get();
+                                                            ->where('producto_id', $id)->first();
                 
                 $banderaQuery_Prod = false;
                 if($carrito_count == 0){
@@ -133,7 +133,7 @@ class CarritoController extends Controller
             
                 $precio_subtotal = $productoSeleccionado->precio * $quantity;
 
-                $actualizar_subtotal = Carrito::where('id', $cart->id)->get();
+                $actualizar_subtotal = Carrito::where('id', $cart->id)->first();
                 $actualizar_subtotal->subtotal += $precio_subtotal;
                 $actualizar_subtotal->update();
 
@@ -206,14 +206,14 @@ class CarritoController extends Controller
             $productoSeleccionado = Producto::find($index);
             $producto_id = $productoSeleccionado->id;
             $linea_carrito = LineasCarrito::where('carrito_id', $cart->id)
-                                            ->where('producto_id', $producto_id);
+                                            ->where('producto_id', $producto_id)->first();
             $precio_producto = $productoSeleccionado->precio;           
             $quantity = $linea_carrito->unidades;
             $precio_prod_por_unidades = $precio_producto * $quantity;
 
             $linea_carrito->delete();
             
-            $actualizar_subtotal = Carrito::where('id', $cart->id);
+            $actualizar_subtotal = Carrito::where('id', $cart->id)->first();
             $actualizar_subtotal->subtotal -= $precio_prod_por_unidades;
             $actualizar_subtotal->update();
 
@@ -270,36 +270,33 @@ class CarritoController extends Controller
         
     }
 
-    public function downItem($index){
+    public function downItem(Request $request, $index){
 
-        $logeado = $this->getUser();
+        $logeado = Auth::user();
 
         if($logeado){
 
             //  Bajar una unidad en la linea del producto seleccionado
-            $entityManager = $this->getDoctrine()->getManager();
+            $cart = $logeado->carrito;
 
-            $cart = $entityManager->getRepository(Carrito::class)->findOneBy(
-                ['usuario' => $logeado->getId()], null, 1);
-            $carrito_id = $cart->getId();
-
-            $productoSeleccionado = $entityManager->getRepository(Producto::class)->find($index);
-            $precio_producto = $productoSeleccionado->getPrecio();
+            $productoSeleccionado = Producto::find($index);
+            $producto_id = $productoSeleccionado->id;
+            $precio_producto = $productoSeleccionado->precio;
             
             //  bajar unidades
-            $query = $entityManager->createQuery(
-                "UPDATE App\Entity\LineasCarrito a SET a.unidades = a.unidades - 1 WHERE a.producto = '$index' AND a.carrito = '$carrito_id'"
-            );
+            $lineas_carrito = LineasCarrito::where('producto_id', $producto_id)
+                                            ->where('carrito_id', $cart->id)->first(); // he usado first porque al ser una relación uno a muchos lo trata como una colección y entonces no deja acceder a primer nivel.
+
+            $lineas_carrito->unidades -= 1;            
+            $lineas_carrito->update();
+
             //  bajar el subtotal del carrito
-            $querySubtotal = $entityManager->createQuery(
-                "UPDATE App\Entity\Carrito a SET a.subtotal = a.subtotal - $precio_producto WHERE a.id = '$carrito_id'"
-               );
-            $query->execute();
-            $querySubtotal->execute();           
+            $cart->subtotal -= $precio_producto;
+            $cart->update();         
 
         }else{
 
-            $carrito = $this->session->get('carrito');
+            $carrito = $request->session()->get('carrito');
 
                 if($carrito[$index]['unidades'] == 1){
                     unset($carrito[$index]);
@@ -307,20 +304,20 @@ class CarritoController extends Controller
                     $carrito[$index]['unidades']--;
                 }
             
-            $this->session->set('carrito', $carrito);
+            $request->session()->put('carrito', $carrito);
         }
        
-        return $this->redirectToRoute('carrito_index');
+        return redirect()->route('carrito.index');
     }
 
 
-    public function delete_all(){
+    public function delete_all(Request $request){
 
         $carrito = array();
 
-        $this->session->set('carrito', $carrito);
+        $request->session()->put('carrito', $carrito);
         
-        return $this->redirectToRoute('carrito_index');
+        return redirect()->route('carrito.index');
     }
 
 
