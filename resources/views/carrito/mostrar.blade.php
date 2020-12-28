@@ -34,6 +34,7 @@
                         </tr>
                     </thead>
                     <tbody>
+                       
                      @foreach($carrito as $indice => $elemento)
                         @php
                         $producto = $elemento['producto'];
