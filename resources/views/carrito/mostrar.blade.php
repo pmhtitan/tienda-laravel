@@ -37,7 +37,7 @@
                        
                      @foreach($carrito as $indice => $elemento)
                         @php
-                        $producto = $elemento['producto'];
+                            $producto = $elemento['producto'];
                         @endphp
                         <tr>
                             @if($producto->imagen == null)
@@ -114,7 +114,7 @@
                     <button class="btn btn-block btn-light">Continue Shopping</button>
                 </div>
                 <div class="col-sm-12 col-md-6 text-right">
-                    <a class="btn btn-lg btn-block btn-success text-uppercase">Checkout</a>
+                    <a href="{{ route('carrito.checkout') }}" class="btn btn-lg btn-block btn-success text-uppercase">Checkout</a>
                 </div>
             </div>
         </div>

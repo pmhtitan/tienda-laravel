@@ -6,6 +6,9 @@ use App\Models\Carrito;
 use App\Models\LineasCarrito;
 use App\Models\Producto;
 use App\Models\User;
+use App\Models\DatosFacturacion;
+use App\Models\LineasPedidos;
+use App\Models\Pedido;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -287,13 +290,16 @@ class CarritoController extends Controller
             $lineas_carrito = LineasCarrito::where('producto_id', $producto_id)
                                             ->where('carrito_id', $cart->id)->first(); // he usado first porque al ser una relación uno a muchos lo trata como una colección y entonces no deja acceder a primer nivel.
 
-            $lineas_carrito->unidades -= 1;            
-            $lineas_carrito->update();
-
-            //  bajar el subtotal del carrito
-            $cart->subtotal -= $precio_producto;
-            $cart->update();         
-
+            if($lineas_carrito->unidades == 1){
+                $lineas_carrito->delete();
+            }else{            
+                $lineas_carrito->unidades -= 1;            
+                $lineas_carrito->update();
+            }
+                //  bajar el subtotal del carrito
+                $cart->subtotal -= $precio_producto;
+                $cart->update();         
+            
         }else{
 
             $carrito = $request->session()->get('carrito');
@@ -318,6 +324,253 @@ class CarritoController extends Controller
         $request->session()->put('carrito', $carrito);
         
         return redirect()->route('carrito.index');
+    }
+
+    public function checkout(Request $request){
+
+        $logeado = Auth::user();
+        
+        if($logeado){
+            $findAllLineas = 0;   
+            if($logeado->carrito != null){
+                $cart = $logeado->carrito->count();         
+                if($cart != 0){ // tenemos cart           
+                    $findAllLineas = $logeado->carrito->lineascarrito->count();
+                }
+            } 
+           
+            if($findAllLineas != 0){
+                $findAllLineas = $logeado->carrito->lineascarrito;
+                
+                foreach($findAllLineas as $productObj){
+                    $carrito[] =array(
+                        "id_producto" => $productObj->producto_id,
+                        "precio" => $productObj->precio,
+                        "unidades" => $productObj->unidades,
+                        "producto" => $productObj->producto,
+                    );
+                }
+            }else{
+                return redirect()->route('carrito.index');
+            }
+           
+        }else{
+            $carrito = $request->session()->get('carrito');                
+        }
+
+        $user = new User();
+        $shippingPrice = "6.75";
+        $stats = $user->statsCarrito($carrito, $shippingPrice);
+
+        $request->session()->put('stats', $stats); // guardamos los stats para manejarlos en checkout_start
+        $request->session()->put('carrito_ready', $carrito);
+
+        if($logeado){
+            $existeFacturacion = $logeado->datosFacturacion->count();
+            $datosFacturacion_logeado = $logeado->datosFacturacion->first();
+
+            //  1, significa que hay datos de facturación existentes
+            if($existeFacturacion != 0){
+                //  Le llevamos a la view de checkout, con los datos de facturación
+                return view('carrito.checkout', [
+                    'datosfacturacion' => $datosFacturacion_logeado,
+                    'datosexisten' => true,
+                    'carrito' => $carrito,
+                    'stats' => $stats
+                ]);
+            }else{
+                return view('carrito.checkout', [
+                    'datosexisten' => false,
+                    'carrito' => $carrito,
+                    'stats' => $stats
+                ]);
+                
+            }
+        }else{
+            return view('carrito.checkout', [
+                'datosexisten' => false,
+                'carrito' => $carrito,
+                'stats' => $stats
+            ]);
+        }
+    }
+    
+    public function checkout_start(Request $request){        
+
+        $logeado = Auth::user();
+
+            // Validación
+            $validate = $this->validate($request, [
+                'nombre' => 'required|string',
+                'email' => 'required|string|email',
+                'telefono' => 'required|integer', /* size:9 */
+                'provincia' => 'required|string',
+                'localidad' => 'required|string',
+                'direccion' => 'required|string',
+                'codigo_postal' => 'required|integer' 
+            ]);
+
+            // Recoger datos del formulario 
+            $nombre = $request->input('nombre');
+            $email = $request->input('email');
+            $telefono = $request->input('telefono');
+            $provincia = $request->input('provincia');
+            $localidad = $request->input('localidad');
+            $direccion = $request->input('direccion');
+            $codigo_postal = $request->input('codigo_postal');
+
+            // Recuperamos stats y carrito de la función anterior
+            $stats = $request->session()->get('stats');
+            $carrito = $request->session()->get('carrito_ready');
+
+            if($logeado){
+
+                $existefacturacion = $logeado->datosFacturacion->count();
+
+                if($existefacturacion == 0){ // No existen datos de facturacion >> save
+
+                    $datosfacturacion = new DatosFacturacion();
+
+                    $datosfacturacion->usuario_id = Auth::user()->id;
+                    $datosfacturacion->nombre = $nombre;
+                    $datosfacturacion->email = $email;
+                    $datosfacturacion->telefono = $telefono;
+                    $datosfacturacion->provincia = $provincia;
+                    $datosfacturacion->localidad = $localidad;
+                    $datosfacturacion->direccion = $direccion;
+                    $datosfacturacion->codigo_postal = $codigo_postal;
+
+                    $datosfacturacion->save();
+
+                }else{  //  Existen datos >> update
+
+                    $datosfacturacion = $logeado->datosFacturacion->first();
+
+                    $datosfacturacion->nombre = $nombre;
+                    $datosfacturacion->email = $email;
+                    $datosfacturacion->telefono = $telefono;
+                    $datosfacturacion->provincia = $provincia;
+                    $datosfacturacion->localidad = $localidad;
+                    $datosfacturacion->direccion = $direccion;
+                    $datosfacturacion->codigo_postal = $codigo_postal;
+
+                    $datosfacturacion->update();
+                }
+                
+                 //  Pedido
+                 $pedido = new Pedido();
+                 $date = new \DateTime('now');
+                 $coste = $stats['total'];
+                 $pedido->usuario_id = $logeado->id;
+                 $pedido->coste = $coste;
+                 $pedido->estado = "pendiente";                
+                
+                 $pedido->save();
+
+                 $idPedido = $pedido->id;
+                
+                 $objetoPedido = Pedido::find($idPedido)->first();
+ 
+                 //  Lineas Pedidos
+                 foreach($carrito as $producto){
+                     $objetoProducto = Producto::where('id', $producto['id_producto'])->first();
+                     $lineaPedido = new LineasPedidos();
+                     $lineaPedido->pedido_id = $objetoPedido->id;
+                     $lineaPedido->producto_id = $objetoProducto->id;
+                     $lineaPedido->unidades = $producto['unidades'];                
+                     
+                     $lineaPedido->save();
+                 }
+
+                 // Borrar carrito (borrar productos asociados al carrito y dejarlo vacío)
+
+                 $cartID = $logeado->carrito->id;
+
+                    $lineasCarrito_repo = LineasCarrito::where('carrito_id', $cartID)->get();   
+
+                    foreach($lineasCarrito_repo as $linea){
+                        $linea->delete();                          
+                    }               
+
+                    //  Update - Subtotal del carrito a 0
+                    $carrito = $logeado->carrito;
+                    $carrito->subtotal = 0;
+                    $carrito->update();
+
+                    $carrito_ready = $request->session()->get('carrito_ready');
+
+                 return view('pedido.datosCompra', [
+                    'carrito' => $carrito_ready,
+                    'stats' => $stats
+                 ]);
+
+            }else{
+            
+            $date = new \DateTime('now');
+            $user = new User();
+
+            $user->name = $nombre;
+            $user->session_user = TRUE;
+            $user->save();
+            
+            // add database DatosFacturacion
+            $datosfacturacion = new DatosFacturacion();
+
+            $datosfacturacion->usuario_id = $user->id;
+            $datosfacturacion->nombre = $nombre;
+            $datosfacturacion->email = $email;
+            $datosfacturacion->telefono = $telefono;
+            $datosfacturacion->provincia = $provincia;
+            $datosfacturacion->localidad = $localidad;
+            $datosfacturacion->direccion = $direccion;
+            $datosfacturacion->codigo_postal = $codigo_postal;
+
+            $datosfacturacion->save();
+
+            //  Seteamos el email en sesion para asi poder mostrar los datos de facturacion en otras pestañas,
+            //      buscando por email en DatosFacturacion.
+            $request->session()->put('email', $email);
+
+            // -> Aquí le llevariamos a la plataforma de pago (payment gateway), y tras confirmar pago y/o tarjeta, redirigimos a mostrar la compra efectuada.
+
+            //  Guardamos el pedido completo, y las lineas de pedido correspondientes a los productos asociados a la compra
+
+                //  Pedido
+                $pedido = new Pedido();
+                $coste = $stats['total'];
+                $pedido->usuario_id = $user->id;
+                $pedido->coste = $coste;
+                $pedido->estado = "pendiente";                
+               
+                $pedido->save();
+
+                //  necesito recoger el id del ultimo pedido efectuado (este), para las lineas de pedido.
+                //  +Problema => si queremos realmente que cuando un usuario se cree una cuenta nueva, y se le asignen pedidos pasados, tendríamos que rediseñar la tabla de pedidos, y en vez de apuntar a usuario_id, que apunte a datosFacturacion, y separar la logica de por cuenta y sesion?
+                
+                $idPedido = $pedido->id;
+
+                //  Lineas Pedidos
+                foreach($carrito as $producto){
+                    $objetoProducto = Producto::where('id', $producto['id_producto'])->first();
+                    $lineaPedido = new LineasPedidos();
+                    $lineaPedido->pedido_id = $idPedido;
+                    $lineaPedido->producto_id = $objetoProducto->id;
+                    $lineaPedido->unidades = $producto['unidades'];                
+                    
+                    $lineaPedido->save();
+                }
+
+
+                $carritoVacio = array();
+
+                $request->session()->put('carrito', $carritoVacio);
+                $carrito_ready = $request->session()->get('carrito_ready');
+                
+                return view('pedido.datosCompra', [
+                    'carrito' => $carrito_ready,
+                    'stats' => $stats
+                 ]);
+            }           
     }
 
 

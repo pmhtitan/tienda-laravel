@@ -52,7 +52,7 @@ class User extends Authenticatable
 
     // Uno a muchos
     public function datosFacturacion(){
-        return $this->hasMany('App\Models\DatosFacturacion');
+        return $this->hasMany('App\Models\DatosFacturacion', 'usuario_id'); // y esto
     }
 
     // One to One

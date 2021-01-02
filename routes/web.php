@@ -59,6 +59,8 @@ Route::get('/ajax-request', [CarritoController::class, 'guardar_quantity_session
 Route::get('/carrito-up/{index}', [CarritoController::class, 'upItem'])->name('carrito.up');
 Route::get('/carrito-down/{index}', [CarritoController::class, 'downItem'])->name('carrito.down');
 Route::get('/carrito-delete', [CarritoController::class, 'delete_all'])->name('carrito.delete');
+Route::get('/checkout', [CarritoController::class, 'checkout'])->name('carrito.checkout');
+Route::post('/checkout-start', [CarritoController::class, 'checkout_start'])->name('carrito.checkout_start');
 
 /* Ajax */
 Route::get('/ajax_request', [CarritoController::class, 'guardar_quantity_session'])->name('carrito.ajax');
