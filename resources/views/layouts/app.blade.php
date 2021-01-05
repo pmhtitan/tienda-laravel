@@ -12,6 +12,7 @@
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="{{ asset('js/main.js') }}" defer></script>
+    @yield('javascripts')
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -82,9 +83,10 @@
                                     </form>
                                 </div>
                             </li>
+                         
+                        @endguest
 
-                            
-                            <a href="/carrito" class="pl-2">                                   
+                        <a href="/carrito" class="pl-2">                                   
                                 <div class="texto-cart">Cart</div>     
                             </a>  
                             <a href="/carrito">            
@@ -95,7 +97,6 @@
                                     <div class="cart-wheel" style="background-color: #2f5b7b"></div>
                                 </div>
                             </a>
-                        @endguest
                     </ul>
                 </div>
             </div>

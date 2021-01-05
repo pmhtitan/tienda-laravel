@@ -28,6 +28,28 @@ class ProductoController extends Controller
         ]);
     }
 
+    public function mostrarProducto($id){
+
+        // Cargar cuatro productos random
+        $productos_destacados = Producto::all()->random(4);
+        
+        // Obtenemos el producto seleccionado
+        $producto_seleccionado = Producto::find($id);
+
+        if(is_null($producto_seleccionado)){
+            $message = "El producto no existe o no se encuentra disponible.";
+        }else{
+            $message = null;
+        }
+
+        return view('producto.mostrar', [
+           'productos_destacados' => $productos_destacados,
+           'producto' => $producto_seleccionado,
+           'message' => $message
+        ]);
+
+    }
+
     public function viewCrearProducto(){      
         $categorias = Categoria::all();
 
