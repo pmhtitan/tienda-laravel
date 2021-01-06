@@ -69,32 +69,13 @@ class CarritoController extends Controller
         ]);
     }
 
-     //  AJAX REQUEST que lleva la Quantity del item por POST
-   public function guardar_quantity_session(Request $request){
-
-    if (!$request->isXmlHttpRequest()) {
-        return new JsonResponse(array(
-            'status' => 'Error',
-            'message' => 'Ha ocurrido un error al almacenar las unidades del shopping cart'),
-        400);
-    }
-        $quantity = $request->request->get('quantity');
-       
-        $request->session()->put('quantity',$quantity);
-    
-    return new JsonResponse( array(
-        'status' => 'Fine',
-        'message' => 'Todo correcto'),    
-    );
-   }
-
    public function addItem(Request $request, $id){
 
         $logeado = Auth::user();
 
-        (int) $quantity = $request->session()->get('quantity'); // quantity de los items antes de llegar aqui
+        (int)$quantity = $request->input('quantity_input'); // quantity de los items antes de llegar aqui
 
-        if(empty($quantity)){
+        if(empty($quantity) || is_null($quantity) || $quantity < 1){
             $quantity = 1;
         }
 

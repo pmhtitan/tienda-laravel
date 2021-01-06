@@ -1,10 +1,12 @@
 @extends('layouts.app')
 
-@if(is_null($message))
-    @section('title', '{{ $producto->nombre }}')
-@else
-    @section('title', 'Producto no encontrado')    
-@endif
+@section('title')
+    @if(is_null($message))
+        {{ $producto->nombre }}
+    @else
+        Producto no encontrado
+    @endif
+@endsection
 
 @section('content')
 
@@ -39,18 +41,18 @@
                       
                         <div class="mt-3"> <span class="product_info">{{ $producto->descripcion }}</span></div>                       
                         <hr class="singleline">
-                        <div class="order_info d-flex flex-row">
-                            <form action="#">
-                        </div>
                         <div class="row">
-                            <div class="col-xs-6" style="margin-left: 13px;">
-                                <div class="product_quantity"> <span>Cantidad: </span> <input type="number" id="quantity_input" pattern="[0-9]*" value="1">                                    
+                            <form method="GET" action="{{ route('carrito.add', ['id' => $producto->id]) }}">
+                                @csrf
+                                <div class="col-xs-6" style="margin-left: 13px; display:inline;">
+                                    <div class="product_quantity">
+                                        <span>Cantidad: </span> <input type="number" name="quantity_input" pattern="[0-9]*" value="1">                                    
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-xs-6"> <a href="{{ route('carrito.add', ['id' => $producto->id]) }}" class="add-to-cart"><button type="button" class="btn btn-success shop-button btnAjax">Add to Cart</button></a> 
-                            <div id="path-ajax" data-path="{{ route('carrito.ajax') }}"></div>
-                              
-                            </div>
+                                <div class="col-xs-6" style="display:inline-block;">
+                                    <button type="submit" class="btn btn-success shop-button btnAjax" name="submitAddtoCart">Add to cart</button>                            
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>

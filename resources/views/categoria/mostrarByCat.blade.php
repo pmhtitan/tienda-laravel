@@ -1,30 +1,23 @@
 @extends('layouts.app')
 
-@section('content')
-<div class="row justify-content-center" style="
-    float: left;
-    width:206px;
-    margin-top: 20px;
-    margin-left: 10px;">
-    <div class="col-md-12">
-    <div class="card">
-        <div class="card-header text-center">Categorias</div>
-        <div class="body text-center">
-        <li>Sudaderas</li>
-        <li>Pantalones</li>
-        <li>Camisetas</li>
-        <li>Sudaderas</li>
-        <li>Sudaderas</li>
-        </div>
-    </div>
-    </div>
-</div>
+@section('title')
+    @if(is_null($message))
+        {{ $nombre_categoria }}
+    @else
+        Categoria no encontrada
+    @endif
+@endsection
 
+@section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-10">
-            <div class="card">
-                <div class="card-header text-center"><strong>PRODUCTOS DESTACADOS</strong></div>
+        <div class="col-md-10">            
+            @if(!is_null($message))
+            <h1 class="text-center mt-4"> Categoría no encontrada</h1>
+            <h3 class="text-center pt-3"> {{ $message }}</h3>
+            @else   
+            <div class="card">         
+                <div class="card-header text-center"><h1><strong style="text-transform:uppercase"> {{ $nombre_categoria }} </strong></h1></div>
                 <div class="card-body">
                     @if (session('status'))
                     <div class="alert alert-success" role="alert">
@@ -56,8 +49,9 @@
                         </div>
                         @endforeach
                     </div>
-                </div>
+                </div>              
             </div>
+            @endif
         </div>
     </div>
 </div>

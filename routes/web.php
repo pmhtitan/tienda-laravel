@@ -37,6 +37,7 @@ Route::post('/categoria/creado', [CategoriaController::class, 'crearCategoria'])
 /* Gestion Productos */
 Route::get('/producto/gestion', [ProductoController::class, 'gestionProductos'])->name('producto.gestion')->middleware('admin');
 Route::get('/image/file/{filename}', [ProductoController::class, 'getImage'])->name('image.file');
+Route::get('/categoria/{id}', [ProductoController::class, 'mostrarProdByCat'])->name('producto.byCat');
 Route::get('/producto/{id}', [ProductoController::class, 'mostrarProducto'])->name('producto.mostrar');
 Route::get('/producto/editar/{id}', [ProductoController::class, 'editar'])->name('producto.editar')->middleware('admin');
 Route::get('/producto/eliminar/{id}', [ProductoController::class, 'eliminar'])->name('producto.eliminar')->middleware('admin');
@@ -56,7 +57,6 @@ Route::post('/cuenta/guardar-facturacion', [DatosFacturacionController::class, '
 Route::get('/carrito', [CarritoController::class, 'index'])->name('carrito.index');
 Route::get('/carrito-add/{id}', [CarritoController::class, 'addItem'])->name('carrito.add');
 Route::get('/carrito-remove/{index}', [CarritoController::class, 'removeItem'])->name('carrito.remove');
-Route::get('/ajax-request', [CarritoController::class, 'guardar_quantity_session'])->name('carrito.ajax');
 Route::get('/carrito-up/{index}', [CarritoController::class, 'upItem'])->name('carrito.up');
 Route::get('/carrito-down/{index}', [CarritoController::class, 'downItem'])->name('carrito.down');
 Route::get('/carrito-delete', [CarritoController::class, 'delete_all'])->name('carrito.delete');

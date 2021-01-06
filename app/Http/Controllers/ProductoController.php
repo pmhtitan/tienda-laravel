@@ -50,6 +50,28 @@ class ProductoController extends Controller
 
     }
 
+    public function mostrarProdByCat(Request $request, $id){
+        
+        // Obtener la categoria buscada
+        $categoria = Categoria::find($id);
+
+        if(empty($categoria)){
+            return view('categoria.mostrarByCat', [
+                'message' => "La categoría buscada no existe"
+            ]);
+        }else{
+            $productos_cat = Producto::where('categoria_id', $categoria->id)->paginate(9);
+            $nombre_categoria = $categoria->nombre;
+
+            return view('categoria.mostrarByCat', [
+                'message' => null,
+                'nombre_categoria' => $nombre_categoria,
+                'productos' => $productos_cat
+            ]);
+        }
+        
+    }
+
     public function viewCrearProducto(){      
         $categorias = Categoria::all();
 
