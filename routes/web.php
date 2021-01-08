@@ -37,7 +37,6 @@ Route::post('/categoria/creado', [CategoriaController::class, 'crearCategoria'])
 /* Gestion Productos */
 Route::get('/producto/gestion', [ProductoController::class, 'gestionProductos'])->name('producto.gestion')->middleware('admin');
 Route::get('/image/file/{filename}', [ProductoController::class, 'getImage'])->name('image.file');
-Route::get('/categoria/{id}', [ProductoController::class, 'mostrarProdByCat'])->name('producto.byCat');
 Route::get('/producto/{id}', [ProductoController::class, 'mostrarProducto'])->name('producto.mostrar');
 Route::get('/producto/editar/{id}', [ProductoController::class, 'editar'])->name('producto.editar')->middleware('admin');
 Route::get('/producto/eliminar/{id}', [ProductoController::class, 'eliminar'])->name('producto.eliminar')->middleware('admin');
@@ -45,6 +44,7 @@ Route::post('/producto/editado', [ProductoController::class, 'editado'])->name('
 
 /* Gestion Categorias */
 Route::get('/categoria/gestion', [CategoriaController::class, 'gestionCategorias'])->name('categoria.gestion')->middleware('admin');
+Route::get('/categoria/{id}', [ProductoController::class, 'mostrarProdByCat'])->name('producto.byCat');
 Route::get('/categoria/editar/{id}', [CategoriaController::class, 'editar'])->name('categoria.editar')->middleware('admin');
 Route::get('/categoria/eliminar/{id}', [CategoriaController::class, 'eliminar'])->name('categoria.eliminar')->middleware('admin');
 Route::post('/categoria/editado', [CategoriaController::class, 'editado'])->name('categoria.editado')->middleware('admin');

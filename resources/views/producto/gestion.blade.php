@@ -42,8 +42,8 @@
                                 <td>{{ $prod->categoria->nombre }}</td>
                                 <td><img src="{{ route('image.file', ['filename' => $prod->imagen]) }}" width='50' height='50'/></td>
                                 <td class="td-caja-gestionProd">    
-                                    <a href="{{ route('producto.editar', ['id' => $prod->id]) }}" class="btn btn-success fa fa-edit boton-gestionProd button-trash fw600" title="Editar" alt="Editar"></a>
-                                    <a href="{{ route('producto.eliminar', ['id' => $prod->id]) }}"  onclick="return confirm('¿Estás seguro? Vas a borrar un producto')" class="btn btn-danger boton-gestionProd button-nospacing-mobileProd button-trash fa fa-trash ml-1 fw600" title="Borrar" alt="Borrar"></a>
+                                    <a href="{{ route('producto.editar', ['id' => $prod->id]) }}" class="btn btn-success fa fa-edit boton-gestionProd button-trash fw400" title="Editar" alt="Editar"></a>
+                                    <a href="{{ route('producto.eliminar', ['id' => $prod->id]) }}"  onclick="return confirm('¿Estás seguro? Vas a borrar un producto')" class="btn btn-danger boton-gestionProd button-nospacing-mobileProd button-trash fa fa-trash ml-1 fw400" title="Borrar" alt="Borrar"></a>
                                 </td>
                             </tr>                      
                              @endforeach
@@ -52,6 +52,9 @@
 
                             </tbody>
                         </table>
+                    </div>
+                    <div class="gestion-paginacion"> 
+                    {{ $productos->links('pagination::bootstrap-4') }}  
                     </div> 
                 </div>
             </div>

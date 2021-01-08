@@ -1,27 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="row justify-content-center" style="
-    float: left;
-    width:206px;
-    margin-top: 20px;
-    margin-left: 10px;">
-    <div class="col-md-12">
-    <div class="card">
-        <div class="card-header text-center">Categorias</div>
-        <div class="body text-center">
-        <li>Sudaderas</li>
-        <li>Pantalones</li>
-        <li>Camisetas</li>
-        <li>Sudaderas</li>
-        <li>Sudaderas</li>
-        </div>
-    </div>
-    </div>
-</div>
 
-<div class="container">
-    <div class="row justify-content-center">
+
+<div class="container-fluid d-flex container-top">
+
+    @include('includes.sidebarCat')
+
+    <div class="div-content">
         <div class="col-md-10">
             <div class="card">
                 <div class="card-header text-center"><strong>PRODUCTOS DESTACADOS</strong></div>
@@ -61,4 +47,5 @@
         </div>
     </div>
 </div>
+
 @endsection

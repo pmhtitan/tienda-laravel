@@ -9,8 +9,11 @@
 @endsection
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
+<div class="container-fluid d-flex container-top">
+
+@include('includes.sidebarCat')
+
+    <div class="div-content">
         <div class="col-md-10">            
             @if(!is_null($message))
             <h1 class="text-center mt-4"> Categoría no encontrada</h1>
@@ -49,7 +52,10 @@
                         </div>
                         @endforeach
                     </div>
-                </div>              
+                </div> 
+                <div class="paginacion-byCat"> 
+                {{ $productos->links('pagination::bootstrap-4') }}   
+                </div>        
             </div>
             @endif
         </div>

@@ -22,9 +22,11 @@ class ProductoController extends Controller
     public function index(){
 
         $productos = Producto::orderBy('id', 'desc')->limit(9)->get();
+        $categorias = Categoria::orderBy('nombre', 'asc')->get();
 
         return view('landing', [
-            'productos' => $productos
+            'productos' => $productos,
+            'categorias' => $categorias
         ]);
     }
 
@@ -55,9 +57,13 @@ class ProductoController extends Controller
         // Obtener la categoria buscada
         $categoria = Categoria::find($id);
 
+        //  Sidebar categorias
+        $categorias = Categoria::orderBy('nombre', 'asc')->get();
+
         if(empty($categoria)){
             return view('categoria.mostrarByCat', [
-                'message' => "La categoría buscada no existe"
+                'message' => "La categoría buscada no existe",
+                'categorias' => $categorias
             ]);
         }else{
             $productos_cat = Producto::where('categoria_id', $categoria->id)->paginate(9);
@@ -66,7 +72,8 @@ class ProductoController extends Controller
             return view('categoria.mostrarByCat', [
                 'message' => null,
                 'nombre_categoria' => $nombre_categoria,
-                'productos' => $productos_cat
+                'productos' => $productos_cat,
+                'categorias' => $categorias
             ]);
         }
         

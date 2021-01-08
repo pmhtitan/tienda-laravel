@@ -127,6 +127,9 @@
 .fw600{
     font-weight: 600;
 }
+.fw400{
+    font-weight: 400;
+}
 
 .producto-descripcion-destacados{
     text-overflow: ellipsis;
@@ -712,3 +715,59 @@ ul {
 }
 
 /* FIN Esilos Mostrar Producto */
+
+/* Sidebar Category */
+.sidebar-category{
+    width: 25%;
+}
+.div-content{
+    order: 2;
+    width: 100%;
+}
+
+.link-sidebar{
+    font-size: 13px;
+    color:rgb(77, 75, 75);
+}
+.link-sidebar:hover{
+    font-weight: 600;
+}
+/* Pagination styles */
+
+/* Sin bootstrap - falla de estilos laravel 8 fix */
+.rounded-l-md {
+    width: 40px;
+    height: 41px;
+    display: inline-block;
+}
+.rounded-r-md{
+    width: 40px;
+    height: 41px;
+    display: inline-block;
+}
+
+.w-5{
+   
+}
+.leading-5{
+    margin-top: 1rem;
+}
+.paginacion-byCat .pagination{
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+@media only screen and (max-width:768px){ 
+    .sidebar-category{
+        float:none!important;
+        width: 90%;
+        margin: 20px;
+        order: 2;
+    }
+    .container-top{
+        flex-direction: column; /* importantisimo para que se ponga debajo la sidebar categorias */
+    }
+    .div-content{
+        order: 1;
+    }
+}

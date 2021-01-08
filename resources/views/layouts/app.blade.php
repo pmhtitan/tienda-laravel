@@ -17,6 +17,7 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     @yield('fonts')
 
     <!-- Styles -->
@@ -70,11 +71,21 @@
                                 <a class="dropdown-item" href="{{ route('categoria.crear') }}">
                                         Crear categoria
                                 </a>
-                                @endif
 
-                                    <a class="dropdown-item" href="{{ route('facturacion.datos') }}">
+                                <a class="dropdown-item" href="{{ route('producto.gestion') }}">
+                                        Gestion productos
+                                </a>
+
+                                <a class="dropdown-item" href="{{ route('categoria.gestion') }}">
+                                        Gestion categorias
+                                </a>
+                                @else
+
+                                <a class="dropdown-item" href="{{ route('facturacion.datos') }}">
                                         Mis datos
-                                    </a>
+                                </a>
+
+                                @endif
 
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
