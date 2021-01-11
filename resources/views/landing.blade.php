@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Productos destacados')
+
 @section('content')
 
 
@@ -35,7 +37,7 @@
                                     </p>                                   
                                     <div class="buy d-flex justify-content-between align-items-center">
                                         <div class="price text-success"><h5 class="mt-4">{{ $producto->precio }} €</h5></div>
-                                        <a href="{{ route('carrito.add', ['id' => $producto->id]) }}" class="btn btn-danger mt-3 btnAjax"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+                                        <a href="{{ route('carrito.add', ['id' => $producto->id]) }}" class="btn btn-danger mt-3 btnAjax"> Add to Cart</a>
                                     </div>
                                 </div>
                             </div>                            

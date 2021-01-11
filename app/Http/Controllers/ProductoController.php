@@ -23,10 +23,11 @@ class ProductoController extends Controller
 
         $productos = Producto::orderBy('id', 'desc')->limit(9)->get();
         $categorias = Categoria::orderBy('nombre', 'asc')->get();
+       // $categorias_populares = Categoria::inRandomOrder()->limit(4)->get();
 
         return view('landing', [
             'productos' => $productos,
-            'categorias' => $categorias
+            'categorias' => $categorias,
         ]);
     }
 

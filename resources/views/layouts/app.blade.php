@@ -120,6 +120,76 @@
         <main class="py-4">
             @yield('content')
         </main>
+
+                <!-- Footer -->
+        <footer class="bg-light text-center text-lg-start">
+        <!-- Grid container -->
+        <div class="container p-4">
+            <!--Grid row-->
+            <div class="row">
+            <!--Grid column-->
+            <div class="col-lg-6 col-md-12 mb-4 mb-md-0 text-center">
+                <h5 class="text-uppercase">TIENDA LARAVEL</h5>                    
+                <p class="col-lg-12 footer-text">
+                Tienda especializada en calzado y vestimenta para ambos géneros. Las mejores ofertas del mercado a precio competente.
+                </p>
+            </div>
+            <!--Grid column-->
+
+            <!--Grid column-->
+            <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                <h5 class="text-uppercase">LO MÁS BUSCADO</h5>
+
+                <ul class="list-unstyled mb-0">
+                <li>
+                    <a href="{{ URL::to('/categoria/4') }}" class="text-dark">Abrigos</a>
+                </li>
+                <li>
+                    <a href="{{ URL::to('/categoria/2') }}" class="text-dark">Pantalones</a>
+                </li>
+                <li>
+                    <a href="{{ URL::to('/categoria/1') }}" class="text-dark">Sudaderas</a>
+                </li>
+                <li>
+                    <a href="{{ URL::to('/categoria/3') }}" class="text-dark">Zapatillas</a>
+                </li>
+                </ul>
+            </div>
+            <!--Grid column-->
+
+            <!--Grid column-->
+            <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                <h5 class="text-uppercase">CONTACTO</h5>
+
+                <ul class="list-unstyled">
+                <li>
+                    <a href="#!" class="text-dark">Sobre nosotros</a>
+                </li>
+                <li>
+                    <a href="#!" class="text-dark">Quiénes somos</a>
+                </li>
+                <li>
+                    <a href="#!" class="text-dark">Dónde encontrarnos</a>
+                </li>
+                <li>
+                    <a href="#!" class="text-dark">Atención al cliente</a>
+                </li>
+                </ul>
+            </div>
+            <!--Grid column-->
+            </div>
+            <!--Grid row-->
+        </div>
+        <!-- Grid container -->
+
+        <!-- Copyright -->
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
+            © 2021 Tienda Laravel:
+            <a class="text-dark" href="https://www.linkedin.com/in/pablo-moras/">Pablo Moras</a>
+        </div>
+        <!-- Copyright -->
+        </footer>
+        <!-- Footer -->
     </div>
 </body>
 </html>
