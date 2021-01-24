@@ -28,5 +28,10 @@ class Producto extends Model
         return $this->hasMany('App\Models\LineasCarrito');
     }
 
+    // One to many
+    public function tallasproducto(){
+        return $this->hasMany('App\Models\TallasProducto');
+    }
+
    
 }

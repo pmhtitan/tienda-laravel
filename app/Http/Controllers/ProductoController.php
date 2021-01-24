@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Categoria;
+use App\Models\LineasCarrito;
+use App\Models\LineasPedidos;
 use App\Models\Producto;
+use App\Models\Talla;
+use App\Models\TallasProducto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -39,6 +43,9 @@ class ProductoController extends Controller
         // Obtenemos el producto seleccionado
         $producto_seleccionado = Producto::find($id);
 
+        // Obtenemos las tallas del producto seleccionado
+        $tallas_producto = TallasProducto::where('producto_id', $id)->get();
+
         if(is_null($producto_seleccionado)){
             $message = "El producto no existe o no se encuentra disponible.";
         }else{
@@ -48,6 +55,7 @@ class ProductoController extends Controller
         return view('producto.mostrar', [
            'productos_destacados' => $productos_destacados,
            'producto' => $producto_seleccionado,
+           'tallas' => $tallas_producto,
            'message' => $message
         ]);
 
@@ -82,9 +90,11 @@ class ProductoController extends Controller
 
     public function viewCrearProducto(){      
         $categorias = Categoria::all();
+        $tallas = Talla::all();
 
         return view('producto.crear', [
             'categorias' => $categorias,
+            'tallas' => $tallas
         ]);
     }
 
@@ -98,6 +108,7 @@ class ProductoController extends Controller
             'stock' => 'required',
             'image_path' => 'required|image',
             'selectCategoria' => 'required',
+            'talla' => 'required',
         ]);
 
         // Recoger datos del formulario
@@ -107,6 +118,8 @@ class ProductoController extends Controller
         $stock = $request->input('stock');
         $categoria = $request->input('selectCategoria');
         $image_path = $request->file('image_path');
+        $tallas = $request->input('talla');
+        
 
         // Asignar valores al objeto
         $producto = new Producto();
@@ -127,6 +140,18 @@ class ProductoController extends Controller
 
         $producto->save();
 
+        // Asignar tallas al producto
+        foreach($tallas as $talla){
+
+            $talla_producto = new TallasProducto();
+
+            $talla_producto->producto_id = $producto->id;
+            $talla_producto->talla_id = $talla;
+
+            $talla_producto->save();
+        }
+        
+
         return redirect()->route('home')->with([
             'message' => 'El producto ha sido creado correctamente!!'
         ]);
@@ -143,13 +168,23 @@ class ProductoController extends Controller
     }
 
     public function editar($id){
+
         $producto = Producto::find($id);
         $categorias = Categoria::all();
+        $tallas = Talla::all();
+        $tallas_producto = TallasProducto::where('producto_id', $id)->get()->toArray();
+        $tallas_prod = array();
+            
+            foreach($tallas_producto as $t_prod){
+               array_push($tallas_prod, $t_prod['talla_id']);
+            }
 
         if($producto){
             return view('producto.editar', [
                 'producto' => $producto,
-                'categorias' => $categorias
+                'categorias' => $categorias,
+                'tallas' => $tallas,
+                'tallas_producto' => $tallas_prod,
             ]);
         }else{
             return redirect()->route('home');
@@ -166,6 +201,7 @@ class ProductoController extends Controller
             'stock' => 'required',
             'image_path' => 'image',
             'selectCategoria' => 'required',
+            'talla' => 'required',
         ]);
         
         // Recoger datos del formulario
@@ -176,6 +212,7 @@ class ProductoController extends Controller
         $stock = $request->input('stock');
         $categoria = $request->input('selectCategoria');
         $image_path = $request->file('image_path');
+        $tallas = $request->input('talla');
 
         // Buscar el objeto producto en la base de datos
         $producto = Producto::find($producto_id);
@@ -195,12 +232,51 @@ class ProductoController extends Controller
         // Actualizamos el producto
         $producto->update();
 
+        // Reasignar tallas al producto (eliminar existentes, poner nuevas)
+
+            // > Eliminar existentes
+        $tallas_producto_old = TallasProducto::where('producto_id', $producto_id)->get();
+
+        foreach($tallas_producto_old as $talla_prod_old){
+            $talla_prod_old->delete();
+        }
+
+            // > Poner nuevas
+        foreach($tallas as $talla){
+
+            $talla_producto = new TallasProducto();
+
+            $talla_producto->producto_id = $producto->id;
+            $talla_producto->talla_id = $talla;
+
+            $talla_producto->save();
+    }
+
         return redirect()->route('producto.gestion')->with(['message' => 'Se ha actualizado el producto']);
     }
 
     public function eliminar($id){
         $producto = Producto::find($id);
-        $producto->delete();
+        $existen_lineas_pedidos = LineasPedidos::where('producto_id', $id)->count();
+        $existen_lineas_carrito = LineasCarrito::where('producto_id', $id)->get();
+        if($existen_lineas_pedidos != 0){           
+            // Hay lineas_pedidos, no se puede borrar ese producto (disable? / hacer historial de pedidos y separarlo de existencias?)
+            return redirect()->route('producto.gestion')->with(['message-error' => 'El producto está asociado a historial de pedidos']);
+        }elseif(count($existen_lineas_carrito) != 0){
+            // No hay lineas_pedidos, se puede borrar el producto sin romper lineas existentes
+            foreach($existen_lineas_carrito as $linea_carrito){
+                $linea_carrito->delete();
+            }
+            //  Borrar lineas_tallas_producto asociadas al producto antes de su eliminación
+            $lineas_talla_producto = TallasProducto::where('producto_id', $id)->get();
+                foreach($lineas_talla_producto as $linea_talla_prod){
+                    $linea_talla_prod->delete();
+                }
+            $producto->delete();
+        }else{
+            $producto->delete();
+        }
+       
 
         return redirect()->route('producto.gestion')->with(['message' => 'Se ha borrado el producto']);
     }

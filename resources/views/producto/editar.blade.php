@@ -90,6 +90,28 @@
                         </div>
 
                         <div class="form-group row">
+
+                            <label for="talla" class="col-md-3 col-form-label text-md-right">Talla</label>
+
+                            <div class="col-md-7 div-checkbox">
+                                <div class="row"> 
+                                    @foreach($tallas as $talla)
+                                            @if(in_array($talla->id, $tallas_producto))
+                                                <div class="col-lg-3 col-md-4 col-sm-4 col-4"><input type="checkbox" class="input-checkbox" name="talla[]" value="{{ $talla->id }}" checked> {{ $talla->nombre }}</div>
+                                            @else
+                                                <div class="col-lg-3 col-md-4 col-sm-4 col-4"><input type="checkbox" class="input-checkbox" name="talla[]" value="{{ $talla->id }}"> {{ $talla->nombre }}</div>
+                                            @endif
+                                    @endforeach    
+                                </div> 
+                                @if ($errors->has('talla'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('talla') }}</strong>
+                                    </span>
+                                @endif                          
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
                                 
                                 <label for="image_before" class="col-md-3 col-form-label text-md-right">Imagen anterior</label>
 

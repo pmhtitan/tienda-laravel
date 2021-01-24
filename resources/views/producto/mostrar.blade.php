@@ -44,6 +44,21 @@
                         <div class="row">
                             <form method="GET" action="{{ route('carrito.add', ['id' => $producto->id]) }}">
                                 @csrf
+                                <div class="div-talla">
+                                    <div class="col-xs-6 inblock text-talla">Talla</div>
+                                    <div class="col-xs-6 inblock">
+                                        @for($i = 0; $i < count($tallas); $i++)
+                                            <label class="container-checkbox-talla">{{ $tallas[$i]->talla->nombre }}
+                                                @if($i == 0)
+                                                <input type="radio" name="radio" checked="checked">
+                                                @else
+                                                <input type="radio" name="radio">
+                                                @endif
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        @endfor
+                                    </div>
+                                </div>
                                 <div class="col-xs-6" style="margin-left: 13px; display:inline;">
                                     <div class="product_quantity">
                                         <span>Cantidad: </span> <input type="number" name="quantity_input" pattern="[0-9]*" value="1">                                    
@@ -68,19 +83,21 @@
                 <div class="col-md-6"> <a href="#" data-abc="true"> <span class="ml-auto view-all"></span> </a> </div>
             </div>
             <div class="row">
-                <div class="col-md-5">
+                <div class="col-md-1"></div>
+                <div class="col-md-4">
                     <div class="row padding-2">                    
                         <div class="col-md-5 padding-0">
                             <div class="bbb_combo">
-                                <div class="bbb_combo_image"><img class="bbb_combo_image" src="{{ route('image.file', ['filename' => $productos_destacados[0]->imagen]) }}" alt="{{$productos_destacados[0]->nombre}}" title="{{$productos_destacados[0]->nombre}}"></div>
+                                <div class="bbb_combo_image"><a href="{{ route('producto.mostrar', ['id' => $productos_destacados[0]->id]) }}"><img class="bbb_combo_image" src="{{ route('image.file', ['filename' => $productos_destacados[0]->imagen]) }}" alt="{{$productos_destacados[0]->nombre}}" title="{{$productos_destacados[0]->nombre}}"></a></div>
                                 <div class="d-flex flex-row justify-content-start"> <strike style="color:red;"> <span class="fs-10" style="color:black;">{{ $productos_destacados[0]->precio + rand(1,20) }} €<span> </span></span></strike> <span class="ml-auto"><i class="fa fa-star p-rating"></i><i class="fa fa-star p-rating"></i><i class="fa fa-star p-rating"></i><i class="fa fa-star p-rating"></i></span> </div>
                                 <div class="d-flex flex-row justify-content-start" style=" margin-bottom: 13px; "> <span style="margin-top: -4px;">{{ $productos_destacados[0]->precio }} €</span> <span class="ml-auto fs-10">0 Reviews</span> </div> <div class="descrip-prod">{{ $productos_destacados[0]->descripcion }}</div>
                                 <div class="add-both-cart-button mt-4 mb-4"><a href="{{ route('carrito.add', ['id' => $productos_destacados[0]->id]) }}"><button type="button" class="btn btn-primary shop-button">Add to Cart</button></a></div>
                             </div>
                         </div>
+                        <div class="col-md-2"></div>
                         <div class="col-md-5 padding-0">
                             <div class="bbb_combo">
-                                <div class="bbb_combo_image"><img class="bbb_combo_image" src="{{ route('image.file', ['filename' => $productos_destacados[1]->imagen]) }}" alt="{{$productos_destacados[1]->nombre}}" title="{{$productos_destacados[1]->nombre}}"></div>
+                                <div class="bbb_combo_image"><a href="{{ route('producto.mostrar', ['id' => $productos_destacados[1]->id]) }}"><img class="bbb_combo_image" src="{{ route('image.file', ['filename' => $productos_destacados[1]->imagen]) }}" alt="{{$productos_destacados[1]->nombre}}" title="{{$productos_destacados[1]->nombre}}"></a></div>
                                 <div class="d-flex flex-row justify-content-start"> <strike style="color:red;"> <span class="fs-10" style="color:black;">{{ $productos_destacados[1]->precio + rand(1,20) }} €<span> </span></span></strike> <span class="ml-auto"><i class="fa fa-star p-rating"></i><i class="fa fa-star p-rating"></i><i class="fa fa-star p-rating"></i><i class="fa fa-star p-rating"></i></span> </div>
                                 <div class="d-flex flex-row justify-content-start" style=" margin-bottom: 13px; "> <span style="margin-top: -4px;">{{ $productos_destacados[1]->precio }} €</span> <span class="ml-auto fs-10">0 Reviews</span> </div> <div class="descrip-prod">{{ $productos_destacados[1]->descripcion }}</div>
                                 <div class="add-both-cart-button mt-4 mb-4"><a href="{{ route('carrito.add', ['id' => $productos_destacados[1]->id]) }}"><button type="button" class="btn btn-primary shop-button">Add to Cart</button></a></div>
@@ -90,20 +107,21 @@
                     </div>
                    
                 </div>
-                <div class="col-md-2 text-center"> <span class="vertical-line"></span> </div>
-                <div class="col-md-5" style=" margin-left: -27px;">
+                <div class="col-md-1 text-center"> <span class="vertical-line"></span> </div>
+                <div class="col-md-4">
                     <div class="row padding-2">
                         <div class="col-md-5 padding-0">
                             <div class="bbb_combo">
-                                <div class="bbb_combo_image"><img class="bbb_combo_image" src="{{ route('image.file', ['filename' => $productos_destacados[2]->imagen]) }}" alt="{{$productos_destacados[2]->nombre}}" title="{{$productos_destacados[2]->nombre}}"></div>
+                                <div class="bbb_combo_image"><a href="{{ route('producto.mostrar', ['id' => $productos_destacados[2]->id]) }}"><img class="bbb_combo_image" src="{{ route('image.file', ['filename' => $productos_destacados[2]->imagen]) }}" alt="{{$productos_destacados[2]->nombre}}" title="{{$productos_destacados[2]->nombre}}"></a></div>
                                 <div class="d-flex flex-row justify-content-start"> <strike style="color:red;"> <span class="fs-10" style="color:black;">{{ $productos_destacados[2]->precio + rand(1,20) }} €<span> </span></span></strike> <span class="ml-auto"><i class="fa fa-star p-rating"></i><i class="fa fa-star p-rating"></i><i class="fa fa-star p-rating"></i><i class="fa fa-star p-rating"></i></span> </div>
                                 <div class="d-flex flex-row justify-content-start" style=" margin-bottom: 13px; "> <span style="margin-top: -4px;">{{ $productos_destacados[2]->precio }} €</span> <span class="ml-auto fs-10">0 Reviews</span> </div> <div class="descrip-prod">{{ $productos_destacados[2]->descripcion }}</div>
                                 <div class="add-both-cart-button mt-4 mb-4"><a href="{{ route('carrito.add', ['id' => $productos_destacados[2]->id]) }}"><button type="button" class="btn btn-primary shop-button">Add to Cart</button></a></div>
                             </div>
                         </div>
+                        <div class="col-md-2"></div>
                         <div class="col-md-5 padding-0">
                             <div class="bbb_combo">
-                                <div class="bbb_combo_image"><img class="bbb_combo_image" src="{{ route('image.file', ['filename' => $productos_destacados[3]->imagen]) }}" alt="{{$productos_destacados[3]->nombre}}" title="{{$productos_destacados[3]->nombre}}"></div>
+                                <div class="bbb_combo_image"><a href="{{ route('producto.mostrar', ['id' => $productos_destacados[3]->id]) }}"><img class="bbb_combo_image" src="{{ route('image.file', ['filename' => $productos_destacados[3]->imagen]) }}" alt="{{$productos_destacados[3]->nombre}}" title="{{$productos_destacados[3]->nombre}}"></a></div>
                                 <div class="d-flex flex-row justify-content-start"> <strike style="color:red;"> <span class="fs-10" style="color:black;">{{ $productos_destacados[3]->precio + rand(1,20) }} €<span> </span></span></strike> <span class="ml-auto"><i class="fa fa-star p-rating"></i><i class="fa fa-star p-rating"></i><i class="fa fa-star p-rating"></i><i class="fa fa-star p-rating"></i></span> </div>
                                 <div class="d-flex flex-row justify-content-start" style=" margin-bottom: 13px; "> <span style="margin-top: -4px;">{{ $productos_destacados[3]->precio }} €</span> <span class="ml-auto fs-10">0 Reviews</span> </div> <div class="descrip-prod">{{ $productos_destacados[3]->descripcion }}</div>
                                 <div class="add-both-cart-button mt-4 mb-4"><a href="{{ route('carrito.add', ['id' => $productos_destacados[3]->id]) }}"><button type="button" class="btn btn-primary shop-button">Add to Cart</button></a></div>
@@ -111,6 +129,7 @@
                         </div>
                     </div>                  
                 </div>
+                <div class="col-md-1"></div>
             </div>
             @if(is_null($message))
             <div class="row row-underline">

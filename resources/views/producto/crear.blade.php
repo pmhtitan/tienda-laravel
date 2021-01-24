@@ -76,7 +76,7 @@
                 
                         <div class="form-group row">
 
-                        <label for="categoria" class="col-md-3 col-form-label text-md-right">Categoria</label>
+                            <label for="categoria" class="col-md-3 col-form-label text-md-right">Categoria</label>
 
                             <div class="col-md-7">
                                 <select name="selectCategoria" id="selectCategoria" class="form-control">
@@ -84,6 +84,24 @@
                                     <option value="{{$categoria->id}}">{{$categoria->nombre}}</option>
                                 @endforeach
                                 </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+
+                            <label for="talla" class="col-md-3 col-form-label text-md-right">Talla</label>
+
+                            <div class="col-md-7 div-checkbox">
+                                <div class="row">
+                                    @foreach($tallas as $talla)
+                                        <div class="col-lg-3 col-md-4 col-sm-4 col-4"><input type="checkbox" class="input-checkbox" name="talla[]" value="{{ $talla->id }}"> {{ $talla->nombre }}</div>
+                                    @endforeach    
+                                </div> 
+                                @if ($errors->has('talla'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('talla') }}</strong>
+                                    </span>
+                                @endif                          
                             </div>
                         </div>
 
