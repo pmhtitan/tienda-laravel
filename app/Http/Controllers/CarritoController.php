@@ -7,6 +7,8 @@ use App\Models\LineasCarrito;
 use App\Models\Producto;
 use App\Models\User;
 use App\Models\DatosFacturacion;
+use App\Models\HistorialPedidos;
+use App\Models\LineasHistorial;
 use App\Models\LineasPedidos;
 use App\Models\Pedido;
 use Illuminate\Http\Request;
@@ -392,7 +394,7 @@ class CarritoController extends Controller
             ]);
 
             // Recoger datos del formulario 
-            $nombre = $request->input('nombre');
+            $nombre_usuario = $request->input('nombre');
             $email = $request->input('email');
             $telefono = $request->input('telefono');
             $provincia = $request->input('provincia');
@@ -413,7 +415,7 @@ class CarritoController extends Controller
                     $datosfacturacion = new DatosFacturacion();
 
                     $datosfacturacion->usuario_id = Auth::user()->id;
-                    $datosfacturacion->nombre = $nombre;
+                    $datosfacturacion->nombre = $nombre_usuario;
                     $datosfacturacion->email = $email;
                     $datosfacturacion->telefono = $telefono;
                     $datosfacturacion->provincia = $provincia;
@@ -427,7 +429,7 @@ class CarritoController extends Controller
 
                     $datosfacturacion = $logeado->datosFacturacion->first();
 
-                    $datosfacturacion->nombre = $nombre;
+                    $datosfacturacion->nombre = $nombre_usuario;
                     $datosfacturacion->email = $email;
                     $datosfacturacion->telefono = $telefono;
                     $datosfacturacion->provincia = $provincia;
@@ -461,7 +463,7 @@ class CarritoController extends Controller
                      $lineaPedido->unidades = $producto['unidades'];                
                      
                      $lineaPedido->save();
-                 }
+                 }                
 
                  // Borrar carrito (borrar productos asociados al carrito y dejarlo vacío)
 
@@ -480,78 +482,105 @@ class CarritoController extends Controller
 
                     $carrito_ready = $request->session()->get('carrito_ready');
 
-                 return view('pedido.datosCompra', [
-                    'carrito' => $carrito_ready,
-                    'stats' => $stats
-                 ]);
-
             }else{
             
-            $date = new \DateTime('now');
-            $user = new User();
+                $date = new \DateTime('now');
+                $user = new User();
 
-            $user->name = $nombre;
-            $user->session_user = TRUE;
-            $user->save();
-            
-            // add database DatosFacturacion
-            $datosfacturacion = new DatosFacturacion();
-
-            $datosfacturacion->usuario_id = $user->id;
-            $datosfacturacion->nombre = $nombre;
-            $datosfacturacion->email = $email;
-            $datosfacturacion->telefono = $telefono;
-            $datosfacturacion->provincia = $provincia;
-            $datosfacturacion->localidad = $localidad;
-            $datosfacturacion->direccion = $direccion;
-            $datosfacturacion->codigo_postal = $codigo_postal;
-
-            $datosfacturacion->save();
-
-            //  Seteamos el email en sesion para asi poder mostrar los datos de facturacion en otras pestañas,
-            //      buscando por email en DatosFacturacion.
-            $request->session()->put('email', $email);
-
-            // -> Aquí le llevariamos a la plataforma de pago (payment gateway), y tras confirmar pago y/o tarjeta, redirigimos a mostrar la compra efectuada.
-
-            //  Guardamos el pedido completo, y las lineas de pedido correspondientes a los productos asociados a la compra
-
-                //  Pedido
-                $pedido = new Pedido();
-                $coste = $stats['total'];
-                $pedido->usuario_id = $user->id;
-                $pedido->coste = $coste;
-                $pedido->estado = "pendiente";                
-               
-                $pedido->save();
-
-                //  necesito recoger el id del ultimo pedido efectuado (este), para las lineas de pedido.
-                //  +Problema => si queremos realmente que cuando un usuario se cree una cuenta nueva, y se le asignen pedidos pasados, tendríamos que rediseñar la tabla de pedidos, y en vez de apuntar a usuario_id, que apunte a datosFacturacion, y separar la logica de por cuenta y sesion?
+                $user->name = $nombre_usuario;
+                $user->session_user = TRUE;
+                $user->save();
                 
-                $idPedido = $pedido->id;
+                // add database DatosFacturacion
+                $datosfacturacion = new DatosFacturacion();
 
-                //  Lineas Pedidos
-                foreach($carrito as $producto){
-                    $objetoProducto = Producto::where('id', $producto['id_producto'])->first();
-                    $lineaPedido = new LineasPedidos();
-                    $lineaPedido->pedido_id = $idPedido;
-                    $lineaPedido->producto_id = $objetoProducto->id;
-                    $lineaPedido->unidades = $producto['unidades'];                
+                $datosfacturacion->usuario_id = $user->id;
+                $datosfacturacion->nombre = $nombre_usuario;
+                $datosfacturacion->email = $email;
+                $datosfacturacion->telefono = $telefono;
+                $datosfacturacion->provincia = $provincia;
+                $datosfacturacion->localidad = $localidad;
+                $datosfacturacion->direccion = $direccion;
+                $datosfacturacion->codigo_postal = $codigo_postal;
+
+                $datosfacturacion->save();
+
+                //  Seteamos el email en sesion para asi poder mostrar los datos de facturacion en otras pestañas,
+                //      buscando por email en DatosFacturacion.
+                $request->session()->put('email', $email);
+
+                // -> Aquí le llevariamos a la plataforma de pago (payment gateway), y tras confirmar pago y/o tarjeta, redirigimos a mostrar la compra efectuada.
+
+                //  Guardamos el pedido completo, y las lineas de pedido correspondientes a los productos asociados a la compra
+
+                    //  Pedido
+                    $pedido = new Pedido();
+                    $coste = $stats['total'];
+                    $pedido->usuario_id = $user->id;
+                    $pedido->coste = $coste;
+                    $pedido->estado = "pendiente";                
+                
+                    $pedido->save();
+
+                    //  necesito recoger el id del ultimo pedido efectuado (este), para las lineas de pedido.
+                    //  +Problema => si queremos realmente que cuando un usuario se cree una cuenta nueva, y se le asignen pedidos pasados, tendríamos que rediseñar la tabla de pedidos, y en vez de apuntar a usuario_id, que apunte a datosFacturacion, y separar la logica de por cuenta y sesion?
                     
-                    $lineaPedido->save();
-                }
+                    $idPedido = $pedido->id;
+
+                    //  Lineas Pedidos
+                    foreach($carrito as $producto){
+                        $objetoProducto = Producto::where('id', $producto['id_producto'])->first();
+                        $lineaPedido = new LineasPedidos();
+                        $lineaPedido->pedido_id = $idPedido;
+                        $lineaPedido->producto_id = $objetoProducto->id;
+                        $lineaPedido->unidades = $producto['unidades'];                
+                        
+                        $lineaPedido->save();
+                    }
 
 
-                $carritoVacio = array();
+                    $carritoVacio = array();
 
-                $request->session()->put('carrito', $carritoVacio);
-                $carrito_ready = $request->session()->get('carrito_ready');
+                    $request->session()->put('carrito', $carritoVacio);
+                    $carrito_ready = $request->session()->get('carrito_ready');
+            }
+            
+            /* > HISTORIAL DE PEDIDOS ~ LINEAS DE HISTORIAL */
+
+            // Historial Pedidos
+            $historial = new HistorialPedidos();
+
+            $coste = $stats['total'];
+            
+            $historial->usuario_id = ($logeado) ? $logeado->id : $user->id;
+            $historial->coste = $coste;
+            $historial->estado = "pendiente";
+            $historial->username = $nombre_usuario;
+            $historial->email = $email;
+            $historial->telefono = $telefono;
+            $historial->provincia = $provincia;
+            $historial->localidad = $localidad;
+            $historial->direccion = $direccion;  
+            $historial->codigo_postal = $codigo_postal;
+
+            $historial->save();
+
+            // Lineas Historial
+            foreach($carrito_ready as $producto){
+                $objetoProducto = Producto::where('id', $producto['id_producto'])->first();
+                $lineaHistorial = new LineasHistorial();
+                $lineaHistorial->historial_id = $historial->id;
+                $lineaHistorial->nombre = $objetoProducto->nombre;
+                $lineaHistorial->precio = $objetoProducto->precio;
+                $lineaHistorial->unidades = $producto['unidades'];                
                 
-                return view('pedido.datosCompra', [
-                    'carrito' => $carrito_ready,
-                    'stats' => $stats
-                 ]);
-            }           
+                $lineaHistorial->save();
+            }
+
+            return view('pedido.datosCompra', [
+                'carrito' => $carrito_ready,
+                'stats' => $stats
+            ]);
     }
 
 

@@ -50,6 +50,11 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Pedido');
     }
 
+     // Uno a muchos
+     public function historial(){
+        return $this->hasMany('App\Models\HistorialPedidos');
+    }
+
     // Uno a muchos
     public function datosFacturacion(){
         return $this->hasMany('App\Models\DatosFacturacion', 'usuario_id'); // y esto
