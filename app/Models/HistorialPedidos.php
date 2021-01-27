@@ -20,6 +20,6 @@ class HistorialPedidos extends Model
 
     // One to many
     public function lineashistorial(){
-        return $this->hasMany('App\Models\LineasHistorial');
+        return $this->hasMany('App\Models\LineasHistorial', 'historial_id');
     }
 }

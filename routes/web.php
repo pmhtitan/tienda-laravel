@@ -3,7 +3,9 @@
 use App\Http\Controllers\CarritoController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\DatosFacturacionController;
+use App\Http\Controllers\HistorialPedidosController;
 use App\Http\Controllers\ProductoController;
+use App\Models\HistorialPedidos;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -62,6 +64,9 @@ Route::get('/carrito-down/{index}', [CarritoController::class, 'downItem'])->nam
 Route::get('/carrito-delete', [CarritoController::class, 'delete_all'])->name('carrito.delete');
 Route::get('/checkout', [CarritoController::class, 'checkout'])->name('carrito.checkout');
 Route::post('/checkout-start', [CarritoController::class, 'checkout_start'])->name('carrito.checkout_start');
+
+/* Historial pedidos cliente */
+Route::get('/cuenta/mis-pedidos', [HistorialPedidosController::class, 'mostrar'])->name('historial.mostrar')->middleware('auth');
 
 
 

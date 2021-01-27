@@ -63,6 +63,11 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+
+                                <a class="dropdown-item" href="{{ route('home') }}">
+                                        Dashboard
+                                </a>
+
                                 @if(\Auth::user()->roles == 'admin')
                                 <a class="dropdown-item" href="{{ route('producto.crear') }}">
                                         Crear producto

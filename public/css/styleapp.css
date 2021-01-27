@@ -526,7 +526,7 @@ body {
 }
 
 div {
-    display: block;
+   /*  display: block; */
     position: relative;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -833,6 +833,39 @@ ul {
 .paginacion-byCat .pagination{
     justify-content: center;
     margin-bottom: 1rem;
+}
+
+.min-wh-600px{
+    min-height: 600px;
+}
+
+.min-wh-500px{
+    min-height: 500px;
+}
+
+.min-wh-435px{
+    min-height: 435px;
+}
+
+.btn-info2{
+    color: #fff;
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+}
+
+.btn-info2:hover {
+    color: #fff;
+    background-color: #138496;
+    border-color: #117a8b;
+}
+
+.border-desglosado{
+    border: 1px solid rgb(208 207 207);
+    border-radius: 5px;
+}
+.border-desglosado hr{
+    margin-right: 2%;
+    margin-left: 2%;
 }
 
 @media only screen and (max-width:768px){ 
