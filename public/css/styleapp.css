@@ -868,6 +868,12 @@ ul {
     margin-left: 2%;
 }
 
+/* @media only screen and(max-width:450px){
+    .text-center-movile{
+        text-align: center!important;
+    }
+} */
+
 @media only screen and (max-width:768px){ 
     .sidebar-category{
         float:none!important;

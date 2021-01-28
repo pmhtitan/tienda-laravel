@@ -122,7 +122,7 @@
 
                         <div class="form-group row mb-0">
                             <div class="col-md-3 offset-md-3">
-                                <button type="submit" class="btn btn-primary" name="submitCrearProducto">
+                                <button type="submit" class="btn btn-info2" name="submitCrearProducto">
                                     Crear producto
                                 </button>
                             </div>
