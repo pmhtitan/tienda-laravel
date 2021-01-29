@@ -50,7 +50,7 @@
                                 @else
                                     <a href="{{ route('carrito.down', ['index' => $indice] ) }}">                                
                                 @endif
-                                        <i class="fa fa-minus btn btn-danger cantidad-icono icono-menos" aria-hidden="true"></i>
+                                        <i class="fa fa-minus btn btn-danger cantidad-icono icono-menos fw600" aria-hidden="true"></i>
                                     </a>
 
                                 {{ $elemento['unidades'] }}
@@ -60,7 +60,7 @@
                                 @else
                                     <a href="{{ route('carrito.up', ['index' => $indice] ) }}">                                
                                 @endif
-                                        <i class="fa fa-plus btn btn-success cantidad-icono icono-mas" aria-hidden="true"></i>
+                                        <i class="fa fa-plus btn btn-success cantidad-icono icono-mas fw600" aria-hidden="true"></i>
                                     </a>
 
                             </td>
@@ -107,7 +107,7 @@
         <div class="col mb-2">
             <div class="row">
                 <div class="col-sm-12  col-md-6">
-                    <button class="btn btn-block btn-light">Continue Shopping</button>
+                    <a href="{{ URL::to('/') }}"><button class="btn btn-block btn-light">Continue Shopping</button></a>
                 </div>
                 <div class="col-sm-12 col-md-6 text-right">
                     <a href="{{ route('carrito.checkout') }}" class="btn btn-lg btn-block btn-success text-uppercase">Checkout</a>

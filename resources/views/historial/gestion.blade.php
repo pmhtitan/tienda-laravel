@@ -1,23 +1,25 @@
 @extends('layouts.app')
 
-@section('title', 'Mis pedidos')
+@section('title', 'Gestión pedidos')
 
 @section('content')
 <div class="container">
     <div class="row justify-content-center min-wh-435px">
         <div class="col-md-10">
+        @include('includes.message')
             <div class="card">
-            @include('includes.message')
+           
                
-               <div class="card-header">Dashboard ~ Mis pedidos</div>           
+               <div class="card-header text-center text-uppercase"> GESTIÓN DE PEDIDOS</div>           
                 <div class="card-body">
                 <h3 class="mb-4">Historial de pedidos</h3>
                     @if($hayhistorial)
                         @foreach($historial as $hist)
                             <div class="row">                                
-                                <div class="col-md-4">ID: {{ $hist->id }}</div>
-                                <div class="col-md-4">Coste Total:  {{ $hist->coste }} €</div>
-                                <div class="col-md-4">Estado:  
+                                <div class="col-md-1">ID: {{ $hist->id }}</div>
+                                <div class="col-md-2">Usuario: {{ $hist->username }}</div>
+                                <div class="col-md-3">Coste Total:  {{ $hist->coste }} €</div>
+                                <div class="col-md-3">Estado:  
                                     @if($hist->estado == "pendiente")
                                     <div class="btn btn-sm btn-warning" style="cursor:default;">{{ $hist->estado }}</div>
                                     @elseif($hist->estado == "confirmado")
@@ -25,6 +27,19 @@
                                     @elseif($hist->estado == "enviado")
                                     <div class="btn btn-sm btn-success" style="cursor:default;">{{ $hist->estado }}</div>
                                     @endif
+                                </div>
+                                <div class="col-md-3">
+                                    <form action="{{ route('historial.estado') }}" method="POST">
+                                        @csrf
+                                        <select name="estadoPedido" class="form-control" style="width:63%; display:inline-block;">
+                                            <option value="pendiente" @if($hist->estado == "pendiente") selected @endif >pendiente</option>
+                                            <option value="confirmado" @if($hist->estado == "confirmado") selected @endif >confirmado</option>
+                                            <option value="enviado" @if($hist->estado == "enviado") selected @endif >enviado</option>
+                                        </select>
+                                        <input type="hidden" name="historial_id" value="{{$hist->id}}">
+                                        <input type="hidden" name="usuario_id" value="{{$hist->usuario_id}}">
+                                        <button type="submit" class="btn btn-success" name="submitEstado" title="Guardar cambios"><i class="fas fa-check-circle"></i></button>
+                                    </form>                                    
                                 </div>
                             </div>
                             <details>
@@ -53,7 +68,7 @@
                             {{ $historial->links('pagination::bootstrap-4') }}  
                         </div>
                     @else
-                        <h5 class="pt-4 pb-2">Aquí se muestra el historial de tus compras. Parece que aún no has comprado nada.</h5> 
+                        <h5 class="pt-4 pb-2">Aquí se muestra el historial de los pedidos. Todavía no hay ninguno.</h5> 
                     @endif
                 </div>
             </div>

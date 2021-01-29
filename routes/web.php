@@ -68,6 +68,10 @@ Route::post('/checkout-start', [CarritoController::class, 'checkout_start'])->na
 /* Historial pedidos cliente */
 Route::get('/cuenta/mis-pedidos', [HistorialPedidosController::class, 'mostrar'])->name('historial.mostrar')->middleware('auth');
 
+/* Gestion Historial */
+Route::get('/historial/gestion', [HistorialPedidosController::class, 'gestion'])->name('historial.gestion')->middleware('admin');
+Route::post('/historial/estado-pedido', [HistorialPedidosController::class, 'estado'])->name('historial.estado')->middleware('admin');
+
 
 
 
