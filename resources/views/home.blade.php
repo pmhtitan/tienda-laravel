@@ -29,7 +29,7 @@
                                 </div>
                                 <div class="col-md-1 d-none"></div>                               
                             </div>
-                            <div class="row text-center-movile">
+                            <div class="row text-center-movile pb-3">
                                 <div class="col-md-2">Gestionar</div>
                                 <div class="col-md-4 col-6">
                                     <a href="{{ route('producto.gestion') }}"><button class="btn btn-primary">Gestionar productos</button></a>    
@@ -39,7 +39,18 @@
                                     <a href="{{ route('categoria.gestion') }}"><button class="btn btn-primary">Gestionar categorias</button></a>
                                 </div>
                                 <div class="col-md-1 d-none"></div>                               
-                            </div>                            
+                            </div>  
+                            <div class="row text-center-movile">
+                                <div class="col-md-2">Tallas</div>
+                                <div class="col-md-4 col-6">
+                                    <a href="{{ route('talla.crear') }}"><button class="btn btn-light">Crear tallas</button></a>    
+                                </div>
+                                <div class="col-md-1 d-none"></div>
+                                <div class="col-md-4 col-6">
+                                    <a href="{{ route('talla.gestion') }}"><button class="btn btn-light">Gestionar tallas</button></a>
+                                </div>
+                                <div class="col-md-1 d-none"></div>                               
+                            </div>                           
                             <div class="row text-center-movile mt-4">
                                 <div class="col-2"></div>
                                 <div class="col-8 col-md-7 text-center mb-2">Historial de pedidos</div>

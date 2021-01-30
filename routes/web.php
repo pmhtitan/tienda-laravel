@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\DatosFacturacionController;
 use App\Http\Controllers\HistorialPedidosController;
 use App\Http\Controllers\ProductoController;
+use App\Http\Controllers\TallaController;
 use App\Models\HistorialPedidos;
 use Illuminate\Support\Facades\Route;
 
@@ -72,7 +73,13 @@ Route::get('/cuenta/mis-pedidos', [HistorialPedidosController::class, 'mostrar']
 Route::get('/historial/gestion', [HistorialPedidosController::class, 'gestion'])->name('historial.gestion')->middleware('admin');
 Route::post('/historial/estado-pedido', [HistorialPedidosController::class, 'estado'])->name('historial.estado')->middleware('admin');
 
-
+/* Gestion Tallas */
+Route::get('/talla/crear', [TallaController::class, 'viewCrearTalla'])->name('talla.crear')->middleware('admin');
+Route::post('/talla/creado', [TallaController::class, 'crearTalla'])->name('talla.creado')->middleware('admin');
+Route::get('/talla/gestion', [TallaController::class, 'gestionTallas'])->name('talla.gestion')->middleware('admin');
+Route::get('/talla/editar/{id}', [TallaController::class, 'editar'])->name('talla.editar')->middleware('admin');
+Route::get('/talla/eliminar/{id}', [TallaController::class, 'eliminar'])->name('talla.eliminar')->middleware('admin');
+Route::post('/talla/editado', [TallaController::class, 'editado'])->name('talla.editado')->middleware('admin');
 
 
 

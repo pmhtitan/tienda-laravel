@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Categoria;
+use App\Models\Producto;
 use Illuminate\Http\Request;
 
 class CategoriaController extends Controller
@@ -80,9 +81,18 @@ class CategoriaController extends Controller
 
     public function eliminar($id){
         $categoria = Categoria::find($id);
+        // Para borrar una categoria con productos asociados, hay que borrar los productos asociados, y previamente las líneas de pedidos asociadas.
+        // Luego no vamos a borrar una categoria mientras tenga productos asociados.
 
-        $categoria->delete();
+        $productos_asociados = Producto::where('categoria_id', $id)->get();
+        if(count($productos_asociados) != 0){
+            return redirect()->route('categoria.gestion')->with(['message-error' => 'La categoria tiene asociados productos']);
+        }else{
+            $categoria->delete();
 
-        return redirect()->route('categoria.gestion')->with(['message' => 'Se ha borrado la categoria']);
+            return redirect()->route('categoria.gestion')->with(['message' => 'Se ha borrado la categoria']);
+        }
+
+        
     }
 }
