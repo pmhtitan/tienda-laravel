@@ -11,6 +11,9 @@
 
     <div class="div-content">
         <div class="col-md-10">
+        <h1 class="text-center noto-sans-jp mb-2 mt-2">Tienda de ropa online</h1>
+        <h3 class="noto-sans-jp mt-2 mb-4 pb-2 text-center">Encuentra la mejor vestimenta y calzado en Tienda Laravel.</h3>
+        <h2></h2>
             <div class="card">
                 <div class="card-header text-center"><strong>PRODUCTOS DESTACADOS</strong></div>
                 <div class="card-body">
