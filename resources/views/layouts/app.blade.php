@@ -168,16 +168,16 @@
 
                 <ul class="list-unstyled">
                 <li>
-                    <a href="#!" class="text-dark">Sobre nosotros</a>
+                    <a href="{{ route('contacto.sobre-nosotros') }}" class="text-dark">Sobre nosotros</a>
                 </li>
                 <li>
-                    <a href="#!" class="text-dark">Quiénes somos</a>
+                    <a href="{{ route('contacto.quienes-somos') }}" class="text-dark">Quiénes somos</a>
                 </li>
                 <li>
-                    <a href="#!" class="text-dark">Dónde encontrarnos</a>
+                    <a href="{{ route('contacto.donde-encontrarnos') }}" class="text-dark">Dónde encontrarnos</a>
                 </li>
                 <li>
-                    <a href="#!" class="text-dark">Atención al cliente</a>
+                    <a href=" {{ route('contacto.atencion-cliente') }} " class="text-dark">Atención al cliente</a>
                 </li>
                 </ul>
             </div>

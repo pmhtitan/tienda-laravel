@@ -4,6 +4,7 @@ use App\Http\Controllers\CarritoController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\DatosFacturacionController;
 use App\Http\Controllers\HistorialPedidosController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\TallaController;
 use App\Models\HistorialPedidos;
@@ -81,5 +82,15 @@ Route::get('/talla/editar/{id}', [TallaController::class, 'editar'])->name('tall
 Route::get('/talla/eliminar/{id}', [TallaController::class, 'eliminar'])->name('talla.eliminar')->middleware('admin');
 Route::post('/talla/editado', [TallaController::class, 'editado'])->name('talla.editado')->middleware('admin');
 
+/* Footer */
+Route::get('/sobre-nosotros', function () { return view('contacto.sobre-nosotros'); });
+Route::get('/quienes-somos', function () { return view('contacto.quienes-somos'); });
+Route::get('/donde-encontrarnos', function () { return view('contacto.donde-encontrarnos'); });
+Route::get('/atencion-cliente', function () { return view('contacto.atencion-cliente'); });
+
+Route::get('/sobre-nosotros', [HomeController::class, 'sobreNosotros'])->name('contacto.sobre-nosotros');
+Route::get('/quienes-somos', [HomeController::class, 'quienesSomos'])->name('contacto.quienes-somos');
+Route::get('/donde-encontrarnos', [HomeController::class, 'dondeEncontrarnos'])->name('contacto.donde-encontrarnos');
+Route::get('/atencion-cliente', [HomeController::class, 'atencionCliente'])->name('contacto.atencion-cliente');
 
 

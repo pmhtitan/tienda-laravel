@@ -126,6 +126,9 @@
     .texto-cart{
         padding: 10px 5px 10px 15px;
     }
+    .mobile-break{
+        display: none;
+    }
 }
 
 /* /--/ */
@@ -851,6 +854,20 @@ ul {
 
 .min-wh-435px{
     min-height: 435px;
+}
+.min-wh-400px{
+    min-height: 400px;
+}
+
+.underline{
+    border-bottom: 2px solid currentColor;
+    line-height: 0.85;
+}
+
+
+.quotemark{
+    font-size: 20px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
 .btn-info2{
