@@ -13,18 +13,29 @@
    <div class="super_container">    
     <div class="single_product">
         <div class="container-fluid" style=" background-color: #fff; padding: 11px;">
-            <div class="row">
+            <div class="row xzoom-container">
              @if(is_null($message))
-                <div class="col-lg-2 order-lg-1 order-2">
+                <div class="col-lg-4 order-lg-2 order-1">
+                    <div class="image_selected"><img src="{{ route('image.file', ['filename' => $producto->imagen]) }}" class="xzoom" xoriginal="{{ route('image.file', ['filename' => $producto->imagen]) }}" alt="{{ $producto->nombre }}" title="{{ $producto->nombre }}"></div>
+                </div>
+                <div class="col-lg-2 order-lg-1 order-2 xzoom-thumbs">
                     <ul class="image_list">
-                        <li data-image="https://res.cloudinary.com/dxfq3iotg/image/upload/v1565713229/single_4.jpg"><img src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1565713229/single_4.jpg" alt=""></li>
-                        <li data-image="https://res.cloudinary.com/dxfq3iotg/image/upload/v1565713228/single_2.jpg"><img src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1565713228/single_2.jpg" alt=""></li>
-                        <li data-image="https://res.cloudinary.com/dxfq3iotg/image/upload/v1565713228/single_3.jpg"><img src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1565713228/single_3.jpg" alt=""></li>
+                        <li><a href="{{ route('image.file', ['filename' => $producto->imagen]) }}"><img src="{{ route('image.file', ['filename' => $producto->imagen]) }}" class="xzoom-gallery" ></a></li>
+                        @if(count($imagenes_prod) != 0)
+                            @for($i = 0; $i < 2; $i++)
+                                @if($imagenes_prod[$i])
+                                <li><a href="{{ route('image.file', ['filename' => $imagenes_prod[$i]->nombre ]) }}"><img src="{{ route('image.file', ['filename' => $imagenes_prod[$i]->nombre ]) }}" class="xzoom-gallery"></a></li>
+                                @else
+                                <li><img src="{{ asset('img/no-image.png') }}"></li>
+                                @endif
+                            @endfor
+                        @else
+                        <li><img src="{{ asset('img/no-image.png') }}"></li>
+                        <li><img src="{{ asset('img/no-image.png') }}"></li>
+                        @endif
                     </ul>
                 </div>
-                <div class="col-lg-4 order-lg-2 order-1">
-                    <div class="image_selected"><img src="{{ route('image.file', ['filename' => $producto->imagen]) }}" alt="{{ $producto->nombre }}" title="{{ $producto->nombre }}"></div>
-                </div>
+                
                 <div class="col-lg-6 order-3">
                     <div class="product_description">
                         <nav>

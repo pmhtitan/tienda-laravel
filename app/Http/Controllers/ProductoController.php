@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Categoria;
+use App\Models\ImagenesProd;
 use App\Models\LineasCarrito;
 use App\Models\LineasPedidos;
 use App\Models\Producto;
@@ -43,6 +44,9 @@ class ProductoController extends Controller
         // Obtenemos el producto seleccionado
         $producto_seleccionado = Producto::find($id);
 
+        // Obtenemos las imagenes adicionales del producto, si las hay
+        $imagenes_prod = ImagenesProd::where('producto_id',$id)->get();
+
         // Obtenemos las tallas del producto seleccionado
         $tallas_producto = TallasProducto::where('producto_id', $id)->get();
 
@@ -55,6 +59,7 @@ class ProductoController extends Controller
         return view('producto.mostrar', [
            'productos_destacados' => $productos_destacados,
            'producto' => $producto_seleccionado,
+           'imagenes_prod' => $imagenes_prod,
            'tallas' => $tallas_producto,
            'message' => $message
         ]);
@@ -119,6 +124,8 @@ class ProductoController extends Controller
         $categoria = $request->input('selectCategoria');
         $image_path = $request->file('image_path');
         $tallas = $request->input('talla');
+        $imagen_adicional1 = $request->file('imagen_prod1');
+        $imagen_adicional2 = $request->file('imagen_prod2');
         
 
         // Asignar valores al objeto
@@ -139,6 +146,25 @@ class ProductoController extends Controller
         }
 
         $producto->save();
+
+        // Subir imagenes adicionales
+        if($imagen_adicional1){
+            $image_path_name = time().$imagen_adicional1->getClientOriginalName();
+            Storage::disk('imagenes_productos')->put($image_path_name, File::get($imagen_adicional1));
+            $imagenes_prod = new ImagenesProd();
+            $imagenes_prod->producto_id = $producto->id;
+            $imagenes_prod->nombre = $image_path_name;
+            $imagenes_prod->save();
+        }
+        if($imagen_adicional2){
+            $image_path_name = time().$imagen_adicional2->getClientOriginalName();
+            Storage::disk('imagenes_productos')->put($image_path_name, File::get($imagen_adicional2));
+            $imagenes_prod = new ImagenesProd();
+            $imagenes_prod->producto_id = $producto->id;
+            $imagenes_prod->nombre = $image_path_name;
+            $imagenes_prod->save();
+        }
+
 
         // Asignar tallas al producto
         foreach($tallas as $talla){

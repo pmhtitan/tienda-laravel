@@ -104,10 +104,10 @@
                                 @endif                          
                             </div>
                         </div>
-
+                        <!-- Imagen principal -->
                         <div class="form-group row">
                             
-                            <label for="image_path" class="col-md-3 col-form-label text-md-right">Imagen</label>
+                            <label for="image_path" class="col-md-3 col-form-label text-md-right">Imagen principal</label>
 
                             <div class="col-md-7">
                                 <input id="image_path" type="file" class="form-control{{ $errors->has('image_path') ? ' is-invalid' : '' }}" name="image_path" required autofocus>
@@ -118,6 +118,34 @@
                                     </span>
                                 @endif
                             </div>                            
+                        </div>
+
+                        <!-- Imagenes adicionales -->
+                        <div class="form-group row">
+                            
+                            <label for="image_path" class="col-md-3 col-form-label text-md-right">Imágenes adicionales (opcional)</label>
+
+                            <div class="col-md-7">
+                                <input id="imagen_prod1" type="file" class="form-control{{ $errors->has('imagen_prod1') ? ' is-invalid' : '' }}" name="imagen_prod1" autofocus>
+
+                                @if ($errors->has('image_path'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('imagen_prod1') }}</strong>
+                                    </span>
+                                @endif
+                            </div>  
+                            
+                            <div class="col-md-3"></div>
+
+                            <div class="col-md-7 mt-md-n3">
+                                <input id="imagen_prod2" type="file" class="form-control{{ $errors->has('imagen_prod2') ? ' is-invalid' : '' }}" name="imagen_prod2" autofocus>
+
+                                @if ($errors->has('imagen_prod2'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('imagen_prod2') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
                         </div>
 
                         <div class="form-group row mb-0">
