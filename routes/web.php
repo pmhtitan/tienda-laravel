@@ -45,6 +45,11 @@ Route::get('/producto/{id}', [ProductoController::class, 'mostrarProducto'])->na
 Route::get('/producto/editar/{id}', [ProductoController::class, 'editar'])->name('producto.editar')->middleware('admin');
 Route::get('/producto/eliminar/{id}', [ProductoController::class, 'eliminar'])->name('producto.eliminar')->middleware('admin');
 Route::post('/producto/editado', [ProductoController::class, 'editado'])->name('producto.editado')->middleware('admin');
+Route::get('/producto/gestion-imgs/{id}', [ProductoController::class, 'gestionImagenes'])->name('producto.gestionImagenes')->middleware('admin');
+Route::post('/producto/nuevasImg', [ProductoController::class, 'nuevasImg'])->name('producto.nuevasImg')->middleware('admin');
+Route::get('/producto/editarImg/{id}', [ProductoController::class, 'editarImg'])->name('producto.editarImg')->middleware('admin');
+Route::get('/producto/eliminarImg/{id}', [ProductoController::class, 'eliminarImg'])->name('producto.eliminarImg')->middleware('admin');
+Route::post('/producto/editadoImg', [ProductoController::class, 'editadoImg'])->name('producto.editadoImg')->middleware('admin');
 
 /* Gestion Categorias */
 Route::get('/categoria/gestion', [CategoriaController::class, 'gestionCategorias'])->name('categoria.gestion')->middleware('admin');
@@ -83,14 +88,9 @@ Route::get('/talla/eliminar/{id}', [TallaController::class, 'eliminar'])->name('
 Route::post('/talla/editado', [TallaController::class, 'editado'])->name('talla.editado')->middleware('admin');
 
 /* Footer */
-Route::get('/sobre-nosotros', function () { return view('contacto.sobre-nosotros'); });
-Route::get('/quienes-somos', function () { return view('contacto.quienes-somos'); });
-Route::get('/donde-encontrarnos', function () { return view('contacto.donde-encontrarnos'); });
-Route::get('/atencion-cliente', function () { return view('contacto.atencion-cliente'); });
-
-Route::get('/sobre-nosotros', [HomeController::class, 'sobreNosotros'])->name('contacto.sobre-nosotros');
-Route::get('/quienes-somos', [HomeController::class, 'quienesSomos'])->name('contacto.quienes-somos');
-Route::get('/donde-encontrarnos', [HomeController::class, 'dondeEncontrarnos'])->name('contacto.donde-encontrarnos');
-Route::get('/atencion-cliente', [HomeController::class, 'atencionCliente'])->name('contacto.atencion-cliente');
+Route::get('/sobre-nosotros', [CategoriaController::class, 'sobreNosotros'])->name('contacto.sobre-nosotros');
+Route::get('/quienes-somos', [CategoriaController::class, 'quienesSomos'])->name('contacto.quienes-somos');
+Route::get('/donde-encontrarnos', [CategoriaController::class, 'dondeEncontrarnos'])->name('contacto.donde-encontrarnos');
+Route::get('/atencion-cliente', [CategoriaController::class, 'atencionCliente'])->name('contacto.atencion-cliente');
 
 

@@ -276,7 +276,7 @@ class ProductoController extends Controller
             $talla_producto->talla_id = $talla;
 
             $talla_producto->save();
-    }
+        }
 
         return redirect()->route('producto.gestion')->with(['message' => 'Se ha actualizado el producto']);
     }
@@ -305,6 +305,115 @@ class ProductoController extends Controller
        
 
         return redirect()->route('producto.gestion')->with(['message' => 'Se ha borrado el producto']);
+    }
+
+    public function gestionImagenes($id){
+
+        // Obtener las imagenes adicionales del producto
+        $hayimagenes = false;
+
+        $producto = Producto::find($id);
+        $imagenes_prod = ImagenesProd::where('producto_id', $id)->get();
+        if(count($imagenes_prod) != 0){
+            $hayimagenes = true;
+        }
+
+        return  view('producto.gestionImagenes', [
+            'producto' => $producto,
+            'imagenes' => $imagenes_prod,
+            'hayimagenes' => $hayimagenes
+        ]);
+
+    }
+
+    public function nuevasImg(Request $request){
+
+        $validate = $this->validate($request, [
+            'imagen1' => 'required',
+        ]);
+
+        $producto_id = $request->input('producto_id');
+        $imagen1 = $request->file('imagen1');
+        $imagen2 = $request->file('imagen2');
+
+        // Subir imagenes adicionales
+        if($imagen1){
+            $image_path_name = time().$imagen1->getClientOriginalName();
+            Storage::disk('imagenes_productos')->put($image_path_name, File::get($imagen1));
+            $imagenes_prod = new ImagenesProd();
+            $imagenes_prod->producto_id = $producto_id;
+            $imagenes_prod->nombre = $image_path_name;
+            $imagenes_prod->save();
+        }
+
+        if($imagen2){
+            $image_path_name = time().$imagen2->getClientOriginalName();
+            Storage::disk('imagenes_productos')->put($image_path_name, File::get($imagen2));
+            $imagenes_prod = new ImagenesProd();
+            $imagenes_prod->producto_id = $producto_id;
+            $imagenes_prod->nombre = $image_path_name;
+            $imagenes_prod->save();
+        }
+
+        return redirect()->route('producto.gestionImagenes', ['id' => $producto_id])->with([
+            'message' => 'Se han subido las imágenes del producto'
+        ]);
+    }
+
+    public function editarImg($id){
+
+        $imagen = ImagenesProd::find($id);
+        $producto = Producto::where('id', $imagen->producto->id)->first();
+
+        return view('producto.editarImagen', [
+            'img' => $imagen,
+            'producto' => $producto,
+        ]);
+    }
+
+    public function editadoImg(Request $request){
+
+        
+        // Validación
+        $validate = $this->validate($request, [
+            'image_path' => 'image|required',
+        ]);
+         
+        $imagen_prod_id = $request->input('imagen_id');
+        $producto_id = $request->input('producto_id');
+        $imagen_file = $request->file('image_path');
+
+        if($imagen_file){
+            
+            // Borrar la imagen anterior
+            $imagenes_prod = ImagenesProd::find($imagen_prod_id);
+            Storage::disk('imagenes_productos')->delete($imagenes_prod->nombre);
+
+            // Subir la nueva imagen y actualizar el nombre en la bbdd.
+            $image_path_name = time().$imagen_file->getClientOriginalName();
+            Storage::disk('imagenes_productos')->put($image_path_name, File::get($imagen_file));
+            $imagenes_prod->nombre = $image_path_name;
+            $imagenes_prod->update();
+        }
+
+        return redirect()->route('producto.gestionImagenes', ['id' => $producto_id])->with([
+            'message' => 'Se ha actualizado la imagen adicional del producto'
+        ]);
+
+    }
+
+    public function eliminarImg($id){
+        $imagen_prod = ImagenesProd::find($id);
+        $producto_id = $imagen_prod->producto->id;
+        
+        if(is_null($imagen_prod)){           
+            // No existe la imagen a borrar
+            return redirect()->route('producto.gestion')->with(['message-error' => 'La imagen a borrar no existe']);
+        }else{
+           $imagen_prod->delete();
+        }       
+
+        return redirect()->route('producto.gestionImagenes', ['id' => $producto_id])->with(['message' => 'Se ha borrado la imagen']);
     }
 
     public function getImage($filename){

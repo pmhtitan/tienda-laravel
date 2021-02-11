@@ -8,7 +8,7 @@
         <div class="col-md-8">
 
             <div class="card">
-                <div class="card-header text-center text-uppercase">Editar producto</div>
+                <div class="card-header text-center position-relative"><span class="text-uppercase">Editar producto</span><a href="{{ route('producto.gestion') }}" class="btn btn-primary float-right back-card-button">&#10094; Volver</a></div>
 
                 <div class="card-body">
                     <form action="{{ route('producto.editado') }}" method="POST" enctype="multipart/form-data">
@@ -123,7 +123,7 @@
                         </div>
                         <div class="form-group row">
                             
-                            <label for="image_path" class="col-md-3 col-form-label text-md-right">Nueva imagen</label>
+                            <label for="image_path" class="col-md-3 col-form-label text-md-right">Nueva imagen principal</label>
 
                             <div class="col-md-7">
                                 <input id="image_path" type="file" class="form-control{{ $errors->has('image_path') ? ' is-invalid' : '' }}" name="image_path" autofocus>
@@ -139,10 +139,13 @@
                         <input type="hidden" name="producto_id" value="{{ $producto->id }}"/>
 
                         <div class="form-group row mb-0">
-                            <div class="col-md-3 offset-md-3">
+                            <div class="col-md-3 offset-md-3 order-lg-1 order-2 mt-3 mt-md-0 text-center text-md-left">
                                 <button type="submit" class="btn btn-primary" name="submitCrearImagen">
                                     Actualizar producto
                                 </button>
+                            </div>
+                            <div class="col-md-6 order-lg-2 order-1 text-center text-md-left mt-2 mt-md-0">
+                                <a href="{{ route('producto.gestionImagenes', ['id' => $producto->id ]) }}" class="btn btn-secondary">Administrar imagenes adicionales</a>
                             </div>
                         </div>                       
                                             

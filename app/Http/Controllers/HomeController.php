@@ -20,7 +20,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-      /*   $this->middleware('auth'); */
+         $this->middleware('auth'); 
     }
 
     /**
@@ -61,43 +61,5 @@ class HomeController extends Controller
        }else{
             return view('home');
        }
-    }
-
-    //  >  FOOTER
-    
-    public function sobreNosotros(){
-
-        $categorias = Categoria::all();
-
-        return view('contacto.sobre-nosotros', [
-            'categorias' => $categorias,
-        ]); 
-    }
-
-    public function quienesSomos(){
-
-        $categorias = Categoria::all();
-
-        return view('contacto.quienes-somos', [
-            'categorias' => $categorias,
-        ]); 
-    }
-
-    public function dondeEncontrarnos(){
-
-        $categorias = Categoria::all();
-
-        return view('contacto.donde-encontrarnos', [
-            'categorias' => $categorias,
-        ]); 
-    }
-
-    public function atencionCliente(){
-
-        $categorias = Categoria::all();
-
-        return view('contacto.atencion-cliente', [
-            'categorias' => $categorias,
-        ]); 
     }
 }

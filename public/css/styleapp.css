@@ -149,6 +149,20 @@
     font-weight: 400;
 }
 
+
+.productNameColor{
+    font-size: 18px;
+    color: indigo;
+    font-family: 'Noto Sans JP', sans-serif;
+}
+.back-card-button{
+    font-size:14px;
+    text-transform:none;
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+}
+
 .producto-descripcion-destacados{
     text-overflow: ellipsis;
     white-space: nowrap;
