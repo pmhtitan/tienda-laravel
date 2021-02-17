@@ -150,6 +150,45 @@
 }
 
 
+/* BUSCADOR */
+.people-search-container{
+    border-radius: 10px;
+    -webkit-box-shadow: 0px 3px 15px -11px rgb(0 0 0 / 46%);
+    -moz-box-shadow: 0px 3px 15px -11px rgb(0 0 0 / 46%);
+    box-shadow: 0px 3px 15px -11px rgb(0 0 0 / 46%);
+    margin-bottom: 20px;
+}
+
+.search-message{
+    font-family: 'Acme', 'Open Sans', 'Roboto', 'Lato';
+    font-size: 22px;
+}
+
+.people-search-top{
+    border-radius: 6px;
+    -webkit-box-shadow: -1px -1px 16px -11px rgb(4 107 204);
+    -moz-box-shadow: -1px -1px 16px -11px rgb(4 107 204);
+    box-shadow: -1px -1px 16px -11px rgb(4 107 204);
+    margin-bottom: 5px;
+    font-family: 'Acme', 'Open Sans', 'Roboto', 'Lato';
+    font-size: 28px;
+}
+
+.buscador{
+    display: inline-block;
+    margin-right: 10px;
+    width: 45%;
+}
+@media only screen and (max-width:600px){
+    .buscador{
+        width:60%;
+    }
+}
+.btnBuscador{
+    display: inline-block;
+}
+
+
 .productNameColor{
     font-size: 18px;
     color: indigo;

@@ -56,4 +56,36 @@ class HistorialPedidosController extends Controller
 
         return redirect()->route('historial.gestion')->with(['message' => 'Se ha actualizado el estado del pedido']);
     }
+
+    public function buscador(Request $request){
+
+        $search = $request->input('search');
+        if(!empty($search)){
+            $search_pedidos = HistorialPedidos::where('username', 'LIKE', '%'.$search.'%')
+                                ->orWhere('email', 'LIKE', '%'.$search.'%')
+                                ->orWhere('provincia', 'LIKE', '%'.$search.'%')
+                                ->orWhere('localidad', 'LIKE', '%'.$search.'%')
+                                ->orWhere('direccion', 'LIKE', '%'.$search.'%')
+                                ->orWhere('codigo_postal', 'LIKE', '%'.$search.'%')
+                                ->orderBy('id', 'desc')
+                                ->paginate(8);
+
+                
+            if(count($search_pedidos) != 0){
+                $hayhistorial = true;
+            }else{
+                $hayhistorial = false;
+            }
+            
+
+            return view('historial.busqueda', [
+                'historial' => $search_pedidos,
+                'search' => $search,
+                'hayhistorial' => $hayhistorial,
+            ]);
+                                
+       }else{
+            return redirect()->route('historial.gestion');
+       }        
+    }
 }

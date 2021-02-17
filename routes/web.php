@@ -79,6 +79,10 @@ Route::get('/cuenta/mis-pedidos', [HistorialPedidosController::class, 'mostrar']
 Route::get('/historial/gestion', [HistorialPedidosController::class, 'gestion'])->name('historial.gestion')->middleware('admin');
 Route::post('/historial/estado-pedido', [HistorialPedidosController::class, 'estado'])->name('historial.estado')->middleware('admin');
 
+/* Buscador de pedidos */
+Route::get('/historial/buscador', [HistorialPedidosController::class, 'buscador'])->name('historial.buscador')->middleware('admin');
+
+
 /* Gestion Tallas */
 Route::get('/talla/crear', [TallaController::class, 'viewCrearTalla'])->name('talla.crear')->middleware('admin');
 Route::post('/talla/creado', [TallaController::class, 'crearTalla'])->name('talla.creado')->middleware('admin');

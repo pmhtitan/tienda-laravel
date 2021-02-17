@@ -1,24 +1,19 @@
 @extends('layouts.app')
 
-@section('title', 'Gestión pedidos')
+@section('title', 'Busqueda pedidos')
 
 @section('content')
 <div class="container">
     <div class="row justify-content-center min-wh-435px">
         <div class="col-md-10">
-        @include('includes.message')
-            <h1><div class="people-search-top p-2 text-center text-uppercase">BUSCADOR</div></h1>            
-            <div class="people-search-container p-3">
-                <div class="text-center search-message">
-                    <form action="{{ route('historial.buscador') }}" id="buscador" method="GET">
-                        <input class="form-control buscador d-inline-block" type="text" placeholder="Buscar pedido.." name="search" id="searchID" aria-label="Search">
-                        <button type="submit" class="btn btn-primary btnBuscador d-inline-block">Go!</button>
-                    </form>
+            <h1><div class="people-search-top p-2 text-center text-uppercase">BUSCADOR</div></h1>
+            @if(!empty($search))
+                <div class="people-search-container p-3">
+                    <div class="text-center search-message">{!! 'Se han encontrado <span style="color:blueviolet">'.$historial->total(). '</span> resultados para <span style="color:cornflowerblue">'. $search .'</span>' !!}</div>
                 </div>
-            </div>
-
-            <div class="card">                      
-            <div class="card-header text-center position-relative"><span class="text-uppercase">GESTIÓN DE PEDIDOS</span><a href="{{ route('home') }}" class="btn btn-primary float-right back-card-button">&#10094; Volver</a></div>        
+            @endif
+            <div class="card">           
+            <div class="card-header text-center position-relative"><span class="text-uppercase">BÚSQUEDA DE PEDIDOS</span><a href="{{ route('historial.gestion') }}" class="btn btn-primary float-right back-card-button">&#10094; Volver</a></div>       
                 <div class="card-body">
                 <h3 class="mb-4">Historial de pedidos</h3>
                     @if($hayhistorial)
@@ -76,7 +71,7 @@
                             {{ $historial->links('pagination::bootstrap-4') }}  
                         </div>
                     @else
-                        <h5 class="pt-4 pb-2">Aquí se muestra el historial de los pedidos. Todavía no hay ninguno.</h5> 
+                        <h5 class="pt-4 pb-2">El buscador filtra por <strong style="color:blueviolet;">nombre de usuario</strong>, <strong style="color:blueviolet;">email</strong>, <strong style="color:blueviolet;">localidad</strong>, <strong style="color:blueviolet;">dirección</strong> o <strong style="color:blueviolet;">código postal</strong>.</h5> 
                     @endif
                 </div>
             </div>

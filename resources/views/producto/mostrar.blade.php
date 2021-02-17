@@ -23,7 +23,7 @@
                         <li><a href="{{ route('image.file', ['filename' => $producto->imagen]) }}"><img src="{{ route('image.file', ['filename' => $producto->imagen]) }}" class="xzoom-gallery" ></a></li>
                         @if(count($imagenes_prod) != 0)
                             @for($i = 0; $i < 2; $i++)
-                                @if($imagenes_prod[$i])
+                                @if(!empty($imagenes_prod[$i]))
                                 <li><a href="{{ route('image.file', ['filename' => $imagenes_prod[$i]->nombre ]) }}"><img src="{{ route('image.file', ['filename' => $imagenes_prod[$i]->nombre ]) }}" class="xzoom-gallery"></a></li>
                                 @else
                                 <li><img src="{{ asset('img/no-image.png') }}"></li>
