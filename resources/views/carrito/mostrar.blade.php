@@ -23,6 +23,7 @@
                         <tr>
                             <th scope="col"> </th>
                             <th scope="col">Product</th>
+                            <th scope="col">Size</th>
                             <th scope="col">Available</th>
                             <th scope="col" class="text-center">Quantity</th>
                             <th scope="col" class="text-right">Price</th>
@@ -42,36 +43,67 @@
                             <td><img src="{{ route('image.file', ['filename' => $producto->imagen]) }}" height='50' width='50' /> </td>
                             @endif
                             <td>{{ $producto->nombre }}</td>
+                            <td>{{ $arrayTallas[$elemento['id_talla']-1]->nombre }}</td>
                             <td>In stock</td>
                             <td class="text-center td-a-up-down">
 
                                 @if(Auth::check())
-                                    <a href="{{ route('carrito.down', ['index' => $producto->id] ) }}">    
+                                    <form action="{{  route('carrito.down', ['index' => $producto->id] ) }}" class="d-inline-block" method="GET">
+                                        @csrf
+                                        <input type="hidden" name="talla_id" value="{{ $elemento['id_talla'] }}">
+                                        <button type="submit"><i class="fa fa-minus btn btn-danger cantidad-icono icono-menos fw600" aria-hidden="true"></i></button>
+                                    </form>
+                                    <!-- <a href="{{ route('carrito.down', ['index' => $producto->id] ) }}">   -->  
                                 @else
-                                    <a href="{{ route('carrito.down', ['index' => $indice] ) }}">                                
+                                    <form action="{{ route('carrito.down', ['index' => $indice] ) }}" method="GET">
+                                        @csrf
+                                        <input type="hidden" name="talla_id" value="{{ $elemento['id_talla'] }}">
+                                        <button type="submit"><i class="fa fa-minus btn btn-danger cantidad-icono icono-menos fw600" aria-hidden="true"></i></button>
+                                    </form>
+                                    <!-- <a href="{{ route('carrito.down', ['index' => $indice] ) }}"> -->                                
                                 @endif
-                                        <i class="fa fa-minus btn btn-danger cantidad-icono icono-menos fw600" aria-hidden="true"></i>
-                                    </a>
+                                      <!--   <i class="fa fa-minus btn btn-danger cantidad-icono icono-menos fw600" aria-hidden="true"></i>
+                                    </a> -->
 
                                 {{ $elemento['unidades'] }}
 
                                 @if(Auth::check())
-                                    <a href="{{ route('carrito.up', ['index' => $producto->id] ) }}">    
+                                    <form action="{{  route('carrito.up', ['index' => $producto->id] ) }}" class="d-inline-block" method="GET">
+                                        @csrf
+                                        <input type="hidden" name="talla_id" value="{{ $elemento['id_talla'] }}">
+                                        <button type="submit"><i class="fa fa-plus btn btn-success cantidad-icono icono-menos fw600" aria-hidden="true"></i></button>
+                                    </form>
+                                    <!-- <a href="{{ route('carrito.up', ['index' => $producto->id] ) }}">    --> 
                                 @else
-                                    <a href="{{ route('carrito.up', ['index' => $indice] ) }}">                                
+                                    <form action="{{  route('carrito.up', ['index' => $indice] ) }}" class="d-inline-block" method="GET">
+                                        @csrf
+                                        <input type="hidden" name="talla_id" value="{{ $elemento['id_talla'] }}">
+                                        <button type="submit"><i class="fa fa-plus btn btn-success cantidad-icono icono-menos fw600" aria-hidden="true"></i></button>
+                                    </form>
+                                   <!--  <a href="{{ route('carrito.up', ['index' => $indice] ) }}">   -->                              
                                 @endif
-                                        <i class="fa fa-plus btn btn-success cantidad-icono icono-mas fw600" aria-hidden="true"></i>
-                                    </a>
+                                      <!--   <i class="fa fa-plus btn btn-success cantidad-icono icono-mas fw600" aria-hidden="true"></i>
+                                    </a> -->
 
                             </td>
                             <td class="text-right">{{ $producto->precio }} €</td>
                             <td class="text-right">
                                 @if(Auth::check())
-                                     <a href="{{ route('carrito.remove', ['index' => $producto->id]) }}">
+                                <form action="{{ route('carrito.remove', ['index' => $producto->id]) }}" method="GET">
+                                    @csrf
+                                    <input type="hidden" name="talla_id" value="{{ $elemento['id_talla'] }}">
+                                    <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
+                                </form>
+                                    <!--  <a href="{{ route('carrito.remove', ['index' => $producto->id]) }}"> -->
                                 @else
-                                    <a href="{{ route('carrito.remove', ['index' => $indice]) }}">
-                                @endif
-                                        <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
+                                  <form action="{{ route('carrito.remove', ['index' => $indice]) }}" method="GET">
+                                    @csrf
+                                    <input type="hidden" name="talla_id" value="{{ $elemento['id_talla'] }}">
+                                    <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
+                                </form>
+                                   <!--  <a href="{{ route('carrito.remove', ['index' => $indice]) }}"> -->
+                                @endif                                     
+                                     <!-- <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button> -->
                                     </a>
                             </td>
                         </tr>

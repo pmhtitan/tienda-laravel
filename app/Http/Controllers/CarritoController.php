@@ -11,6 +11,7 @@ use App\Models\HistorialPedidos;
 use App\Models\LineasHistorial;
 use App\Models\LineasPedidos;
 use App\Models\Pedido;
+use App\Models\Talla;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -38,6 +39,7 @@ class CarritoController extends Controller
                 foreach($findAllLineas as $productObj){
                     $carritoSesion[] =array(
                         "id_producto" => $productObj->id,
+                        "id_talla" => $productObj->talla_id,
                         "precio" => $productObj->precio,
                         "unidades" => $productObj->unidades,
                         "producto" => $productObj->producto,
@@ -65,9 +67,12 @@ class CarritoController extends Controller
             $carrito = array();
         }
 
+        $arrayTallas = Talla::all();
+
         return view('carrito.mostrar', [
             'carrito' => $carrito,
             'stats' => $stats,
+            'arrayTallas' => $arrayTallas,
         ]);
     }
 
@@ -76,6 +81,7 @@ class CarritoController extends Controller
         $logeado = Auth::user();
 
         (int)$quantity = $request->input('quantity_input'); // quantity de los items antes de llegar aqui
+        $talla_id =  $request->input('radio');
 
         if(empty($quantity) || is_null($quantity) || $quantity < 1){
             $quantity = 1;
@@ -87,10 +93,11 @@ class CarritoController extends Controller
                // Existe carrito
                 // Comprobar si el producto seleccionado, está ya en el carrito. (si hay lineas del producto)
                 $carrito_count = LineasCarrito::where('carrito_id', $cart->id)
-                                                            ->where('producto_id', $id)->count();
+                                                            ->where('producto_id', $id)->where('talla_id', $talla_id)->count();
 
                 $linea_carrito_seleccionado = LineasCarrito::where('carrito_id', $cart->id)
-                                                            ->where('producto_id', $id)->first();
+                                                            ->where('producto_id', $id)
+                                                            ->where('talla_id', $talla_id)->first();
                 
                 $banderaQuery_Prod = false;
                 if($carrito_count == 0){
@@ -100,6 +107,7 @@ class CarritoController extends Controller
                     $linea_carrito = new LineasCarrito();
                     $linea_carrito->carrito_id = $cart->id;
                     $linea_carrito->producto_id = $productoSeleccionado->id;
+                    $linea_carrito->talla_id =  $talla_id;
                     $linea_carrito->precio = $productoSeleccionado->precio;
                     $linea_carrito->unidades = $quantity;
                     $linea_carrito->save();
@@ -136,6 +144,7 @@ class CarritoController extends Controller
                 $linea_carrito = new LineasCarrito();
                 $linea_carrito->carrito_id = $cart->id;
                 $linea_carrito->producto_id = $productoSeleccionado->id;
+                $linea_carrito->talla_id = $talla_id;
                 $linea_carrito->precio = $productoSeleccionado->precio;
                 $linea_carrito->unidades = $quantity;
                 $linea_carrito->save();
@@ -147,7 +156,7 @@ class CarritoController extends Controller
             if($carrito){
                 $counter = 0;
                 foreach($carrito as $indice => $elemento){
-                    if($elemento['id_producto'] == $id){
+                    if($elemento['id_producto'] == $id && $elemento['id_talla'] == $talla_id){ // && $elemento['id_talla'] == $talla_id
                         for($i = 1; $i <= $quantity; $i++){
                             $carrito[$indice]['unidades']++;
                         }                    
@@ -166,6 +175,7 @@ class CarritoController extends Controller
                 if($productoSeleccionado){
                     $carrito[] =array(
                         "id_producto" => $productoSeleccionado->id,
+                        "id_talla" => $talla_id,
                         "precio" => $productoSeleccionado->precio,
                         "unidades" => $quantity,
                         "producto" => $productoSeleccionado
@@ -191,8 +201,10 @@ class CarritoController extends Controller
 
             $productoSeleccionado = Producto::find($index);
             $producto_id = $productoSeleccionado->id;
+            $talla_id = $request->input('talla_id');
             $linea_carrito = LineasCarrito::where('carrito_id', $cart->id)
-                                            ->where('producto_id', $producto_id)->first();
+                                            ->where('producto_id', $producto_id)
+                                            ->where('talla_id', $talla_id)->first();
             $precio_producto = $productoSeleccionado->precio;           
             $quantity = $linea_carrito->unidades;
             $precio_prod_por_unidades = $precio_producto * $quantity;
@@ -222,6 +234,7 @@ class CarritoController extends Controller
     public function upItem(Request $request, $index){
 
         $logeado = Auth::user();
+        $talla_id =  $request->input('talla_id');
 
         if($logeado){
 
@@ -234,8 +247,8 @@ class CarritoController extends Controller
 
             //  aumentar unidades
             $lineas_carrito = LineasCarrito::where('producto_id', $producto_id)
-                                            ->where('carrito_id', $cart->id)->first(); // he usado first porque al ser una relación uno a muchos lo trata como una colección y entonces no deja acceder a primer nivel.
-                                            
+                                            ->where('carrito_id', $cart->id) // he usado first porque al ser una relación uno a muchos lo trata como una colección y entonces no deja acceder a primer nivel.
+                                            ->where('talla_id', $talla_id)->first();
             $lineas_carrito->unidades += 1;            
             $lineas_carrito->update();
             
@@ -259,6 +272,7 @@ class CarritoController extends Controller
     public function downItem(Request $request, $index){
 
         $logeado = Auth::user();
+        $talla_id =  $request->input('talla_id');
 
         if($logeado){
 
@@ -271,7 +285,8 @@ class CarritoController extends Controller
             
             //  bajar unidades
             $lineas_carrito = LineasCarrito::where('producto_id', $producto_id)
-                                            ->where('carrito_id', $cart->id)->first(); // he usado first porque al ser una relación uno a muchos lo trata como una colección y entonces no deja acceder a primer nivel.
+                                            ->where('carrito_id', $cart->id)
+                                            ->where('talla_id', $talla_id)->first(); // he usado first porque al ser una relación uno a muchos lo trata como una colección y entonces no deja acceder a primer nivel.
 
             if($lineas_carrito->unidades == 1){
                 $lineas_carrito->delete();
@@ -328,6 +343,7 @@ class CarritoController extends Controller
                 foreach($findAllLineas as $productObj){
                     $carrito[] =array(
                         "id_producto" => $productObj->producto_id,
+                        "id_talla" => $productObj->talla_id,
                         "precio" => $productObj->precio,
                         "unidades" => $productObj->unidades,
                         "producto" => $productObj->producto,
@@ -460,6 +476,7 @@ class CarritoController extends Controller
                      $lineaPedido = new LineasPedidos();
                      $lineaPedido->pedido_id = $objetoPedido->id;
                      $lineaPedido->producto_id = $objetoProducto->id;
+                     $lineaPedido->talla_id = $producto['id_talla'];
                      $lineaPedido->unidades = $producto['unidades'];                
                      
                      $lineaPedido->save();
@@ -533,6 +550,7 @@ class CarritoController extends Controller
                         $lineaPedido = new LineasPedidos();
                         $lineaPedido->pedido_id = $idPedido;
                         $lineaPedido->producto_id = $objetoProducto->id;
+                        $lineaPedido->talla_id = $producto['id_talla'];
                         $lineaPedido->unidades = $producto['unidades'];                
                         
                         $lineaPedido->save();
@@ -568,9 +586,11 @@ class CarritoController extends Controller
             // Lineas Historial
             foreach($carrito_ready as $producto){
                 $objetoProducto = Producto::where('id', $producto['id_producto'])->first();
+                $objetoTalla = Talla::where('id', $producto['id_talla'])->first();
                 $lineaHistorial = new LineasHistorial();
                 $lineaHistorial->historial_id = $historial->id;
                 $lineaHistorial->nombre = $objetoProducto->nombre;
+                $lineaHistorial->talla = $objetoTalla->nombre;
                 $lineaHistorial->precio = $objetoProducto->precio;
                 $lineaHistorial->unidades = $producto['unidades'];                
                 

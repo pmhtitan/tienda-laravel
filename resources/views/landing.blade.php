@@ -37,11 +37,28 @@
                                     <h6 class="card-subtitle mb-2 text-muted">{{ $producto->categoria->nombre }}</h6>
                                     <p class="card-text producto-descripcion-destacados">
                                         {{ $producto->descripcion }}
-                                    </p>                                   
-                                    <div class="buy d-flex justify-content-between align-items-center">
-                                        <div class="price text-success"><h5 class="mt-4">{{ $producto->precio }} €</h5></div>
-                                        <a href="{{ route('carrito.add', ['id' => $producto->id]) }}" class="btn btn-danger mt-3 btnAjax"> Add to Cart <i class="fas fa-shopping-cart"></i></a>
-                                    </div>
+                                    </p>  
+                                    <form action="{{ route('carrito.add', ['id' => $producto->id]) }}" method="GET">
+                                    @csrf
+                                        <div class="div-talla">
+                                            <div class="col-xs-6 inblock">                                                
+                                                    @for($i = 0; $i < count($producto->tallasproducto); $i++)
+                                                        <label class="container-checkbox-talla">{{ $producto->tallasproducto[$i]->talla->nombre }}
+                                                            @if($i == 0)
+                                                            <input type="radio" name="radio" checked="checked" value="{{ $producto->tallasproducto[$i]->talla->id }}">
+                                                            @else
+                                                            <input type="radio" name="radio" value="{{ $producto->tallasproducto[$i]->talla->id }}">
+                                                            @endif
+                                                            <span class="checkmark"></span>
+                                                        </label>
+                                                    @endfor                                            
+                                            </div>
+                                        </div>                                 
+                                        <div class="buy d-flex justify-content-between align-items-center">
+                                            <div class="price text-success"><h5 class="mt-4">{{ $producto->precio }} €</h5></div>
+                                            <button type="submit" class="btn btn-danger mt-3 btnAjax"> Add to Cart <i class="fas fa-shopping-cart"></i></button>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>                            
                         </div>

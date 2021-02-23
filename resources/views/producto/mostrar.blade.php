@@ -61,9 +61,9 @@
                                         @for($i = 0; $i < count($tallas); $i++)
                                             <label class="container-checkbox-talla">{{ $tallas[$i]->talla->nombre }}
                                                 @if($i == 0)
-                                                <input type="radio" name="radio" checked="checked">
+                                                <input type="radio" name="radio" checked="checked" value="{{ $tallas[$i]->talla->id }}">
                                                 @else
-                                                <input type="radio" name="radio">
+                                                <input type="radio" name="radio" value="{{ $tallas[$i]->talla->id }}">
                                                 @endif
                                                 <span class="checkmark"></span>
                                             </label>

@@ -17,5 +17,10 @@ class Talla extends Model
      public function tallasproducto(){
         return $this->hasMany('App\Models\TallasProducto', 'id');
     }
+
+     // One to many
+    public function lineaspedidos(){
+        return $this->hasMany('App\Models\LineasPedidos');
+    }
     
 }

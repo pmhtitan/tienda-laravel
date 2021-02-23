@@ -23,4 +23,9 @@ class LineasPedidos extends Model
         return $this->belongsTo('App\Models\Producto', 'producto_id');
     }
 
+    //Many to one
+    public function talla(){
+        return $this->belongsTo('App\Models\Talla', 'talla_id');
+    }
+
 }
