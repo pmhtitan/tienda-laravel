@@ -22,7 +22,7 @@
                         $producto = $elemento['producto'];
                     @endphp
                         
-                        <span class="float-left span-infoCompra-box"> {{ $producto->nombre }}</span>
+                        <span class="float-left span-infoCompra-box"> {{ $producto->nombre }} {{ $arrayTallas[$elemento['id_talla']-1]->nombre }}</span>
                         <span class="float-right">{{ $producto->precio }} €</span>
                         @if($elemento['unidades'] > 1)
                         <span class="float-left ml-1">( {{ $elemento['unidades'] }} )</span>

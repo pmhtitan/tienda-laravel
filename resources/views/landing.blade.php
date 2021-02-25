@@ -43,13 +43,13 @@
                                         <div class="div-talla">
                                             <div class="col-xs-6 inblock">                                                
                                                     @for($i = 0; $i < count($producto->tallasproducto); $i++)
-                                                        <label class="container-checkbox-talla">{{ $producto->tallasproducto[$i]->talla->nombre }}
+                                                        <label class="container-checkbox-talla-destacados">{{ $producto->tallasproducto[$i]->talla->nombre }}
                                                             @if($i == 0)
                                                             <input type="radio" name="radio" checked="checked" value="{{ $producto->tallasproducto[$i]->talla->id }}">
                                                             @else
                                                             <input type="radio" name="radio" value="{{ $producto->tallasproducto[$i]->talla->id }}">
                                                             @endif
-                                                            <span class="checkmark"></span>
+                                                            <span class="checkmark-destacados"></span>
                                                         </label>
                                                     @endfor                                            
                                             </div>

@@ -51,14 +51,14 @@
                                     <form action="{{  route('carrito.down', ['index' => $producto->id] ) }}" class="d-inline-block" method="GET">
                                         @csrf
                                         <input type="hidden" name="talla_id" value="{{ $elemento['id_talla'] }}">
-                                        <button type="submit"><i class="fa fa-minus btn btn-danger cantidad-icono icono-menos fw600" aria-hidden="true"></i></button>
+                                        <button type="submit" class="fa fa-minus btn btn-danger cantidad-icono icono-menos fw600" aria-hidden="true"></button>
                                     </form>
                                     <!-- <a href="{{ route('carrito.down', ['index' => $producto->id] ) }}">   -->  
                                 @else
                                     <form action="{{ route('carrito.down', ['index' => $indice] ) }}" method="GET">
                                         @csrf
                                         <input type="hidden" name="talla_id" value="{{ $elemento['id_talla'] }}">
-                                        <button type="submit"><i class="fa fa-minus btn btn-danger cantidad-icono icono-menos fw600" aria-hidden="true"></i></button>
+                                        <button type="submit" class="fa fa-minus btn btn-danger cantidad-icono icono-menos fw600" aria-hidden="true"></button>
                                     </form>
                                     <!-- <a href="{{ route('carrito.down', ['index' => $indice] ) }}"> -->                                
                                 @endif
@@ -71,14 +71,14 @@
                                     <form action="{{  route('carrito.up', ['index' => $producto->id] ) }}" class="d-inline-block" method="GET">
                                         @csrf
                                         <input type="hidden" name="talla_id" value="{{ $elemento['id_talla'] }}">
-                                        <button type="submit"><i class="fa fa-plus btn btn-success cantidad-icono icono-menos fw600" aria-hidden="true"></i></button>
+                                        <button type="submit" class="fa fa-plus btn btn-success cantidad-icono icono-menos fw600" aria-hidden="true"></button>
                                     </form>
                                     <!-- <a href="{{ route('carrito.up', ['index' => $producto->id] ) }}">    --> 
                                 @else
                                     <form action="{{  route('carrito.up', ['index' => $indice] ) }}" class="d-inline-block" method="GET">
                                         @csrf
                                         <input type="hidden" name="talla_id" value="{{ $elemento['id_talla'] }}">
-                                        <button type="submit"><i class="fa fa-plus btn btn-success cantidad-icono icono-menos fw600" aria-hidden="true"></i></button>
+                                        <button type="submit" class="fa fa-plus btn btn-success cantidad-icono icono-menos fw600" aria-hidden="true"></button>
                                     </form>
                                    <!--  <a href="{{ route('carrito.up', ['index' => $indice] ) }}">   -->                              
                                 @endif
@@ -113,6 +113,7 @@
                             <td></td>
                             <td></td>
                             <td></td>
+                            <td></td>
                             <td>Sub-Total</td>
                             <td class="text-right">{{ $stats['subtotal'] }} €</td>
                         </tr>
@@ -121,10 +122,12 @@
                             <td></td>
                             <td></td>
                             <td></td>
+                            <td></td>
                             <td>Shipping</td>
                             <td class="text-right">{{ $stats['shippingPrice'] }} €</td>
                         </tr>
                         <tr>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>

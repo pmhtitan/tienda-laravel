@@ -33,7 +33,7 @@
                                     <div class="mt-3">
                                     @foreach($hist->lineashistorial as $linea)
                                         <div  class="row pl-4">
-                                            <div class="col-md-4"> <u>Producto</u>:  {{ $linea->nombre }} </div>
+                                            <div class="col-md-4"> <u>Producto</u>:  {{ $linea->nombre }} ({{ $linea->talla}}) </div>
                                             <div class="col-md-4"> <u>Precio</u>:  {{ $linea->precio }} € </div>
                                             <div class="col-md-4"> <u>Unidades</u>:  {{ $linea->unidades }} </div>                                            
                                         </div>

@@ -364,6 +364,8 @@ class CarritoController extends Controller
         $request->session()->put('stats', $stats); // guardamos los stats para manejarlos en checkout_start
         $request->session()->put('carrito_ready', $carrito);
 
+        $arrayTallas = Talla::all();
+
         if($logeado){
             $existeFacturacion = $logeado->datosFacturacion->count();
             $datosFacturacion_logeado = $logeado->datosFacturacion->first();
@@ -375,13 +377,15 @@ class CarritoController extends Controller
                     'datosfacturacion' => $datosFacturacion_logeado,
                     'datosexisten' => true,
                     'carrito' => $carrito,
-                    'stats' => $stats
+                    'stats' => $stats,
+                    'arrayTallas' => $arrayTallas
                 ]);
             }else{
                 return view('carrito.checkout', [
                     'datosexisten' => false,
                     'carrito' => $carrito,
-                    'stats' => $stats
+                    'stats' => $stats,
+                    'arrayTallas' => $arrayTallas
                 ]);
                 
             }
@@ -389,7 +393,8 @@ class CarritoController extends Controller
             return view('carrito.checkout', [
                 'datosexisten' => false,
                 'carrito' => $carrito,
-                'stats' => $stats
+                'stats' => $stats,
+                'arrayTallas' => $arrayTallas
             ]);
         }
     }
@@ -422,6 +427,8 @@ class CarritoController extends Controller
             $stats = $request->session()->get('stats');
             $carrito = $request->session()->get('carrito_ready');
 
+            $arrayTallas = Talla::all();
+            
             if($logeado){
 
                 $existefacturacion = $logeado->datosFacturacion->count();
@@ -599,7 +606,8 @@ class CarritoController extends Controller
 
             return view('pedido.datosCompra', [
                 'carrito' => $carrito_ready,
-                'stats' => $stats
+                'stats' => $stats,
+                'arrayTallas' => $arrayTallas
             ]);
     }
 
