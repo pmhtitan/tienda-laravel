@@ -43,6 +43,65 @@ class HistorialPedidosController extends Controller
         ]);
     }
 
+    public function editarPedido($id){
+
+        $historial = HistorialPedidos::find($id);
+        if($historial){
+            $hayhistorial = true;
+        }else{
+            $hayhistorial = false;
+        }
+        return view('historial.editar', [
+            'historial' => $historial,
+            'hayhistorial' => $hayhistorial,
+        ]);
+    }
+
+    public function editado(Request $request){
+
+        // Validación
+        $validate = $this->validate($request, [
+            'username' => 'required',
+            'email' => 'required',
+            'coste' => 'required|numeric',
+            'estado' => 'required',
+            'telefono' => 'required',
+            'provincia' => 'required',
+            'localidad' => 'required',
+            'direccion' => 'required',
+            'codigo_postal' => 'required',            
+        ]);
+
+        // Data
+        $username = $request->input('username');
+        $email = $request->input('email');
+        $coste = $request->input('coste');
+        $estado = $request->input('estado');
+        $telefono = $request->input('telefono');
+        $provincia = $request->input('provincia');
+        $localidad = $request->input('localidad');
+        $direccion = $request->input('direccion');
+        $codigo_postal = $request->input('codigo_postal');
+        $historial_id = $request->input('historial_id');
+        $usuario_id = $request->input('usuario_id');
+
+        // Update
+        $historial = HistorialPedidos::find($historial_id);
+        $historial->username = $username;
+        $historial->email = $email;
+        $historial->coste = $coste;
+        $historial->estado = $estado;
+        $historial->telefono = $telefono;
+        $historial->provincia = $provincia;
+        $historial->localidad = $localidad;
+        $historial->direccion = $direccion;
+        $historial->codigo_postal = $codigo_postal;
+
+        $historial->update();
+
+        return redirect()->route('historial.editar', ['id' => $historial_id])->with(['message' => 'Se han actualizado los datos del historial']);
+    }
+
     public function estado(Request $request){
 
         $historial_id = $request->input('historial_id');

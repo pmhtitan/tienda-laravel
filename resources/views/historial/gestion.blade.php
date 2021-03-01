@@ -66,7 +66,10 @@
                                     <div class="row pl-4">     
                                         <p class="col-md-8"><strong>Facturación</strong>: {{$hist->localidad}}, {{$hist->provincia}}&nbsp; {{$hist->direccion}}&nbsp; {{$hist->codigo_postal}}&nbsp; tlf: {{$hist->telefono}}</p>  
                                         <div class="col-md-4"> {{ $hist->created_at }}</div>
-                                    </div>                           
+                                    </div>
+                                    <div class="row ml-4">
+                                        <a class="btn btn-secondary mb-2" href="{{ route('historial.editar', ['id' => $hist->id]) }}">Editar</a>
+                                    </div>                          
                                 </div>
                             </details>
                             <hr>

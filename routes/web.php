@@ -77,6 +77,8 @@ Route::get('/cuenta/mis-pedidos', [HistorialPedidosController::class, 'mostrar']
 
 /* Gestion Historial */
 Route::get('/historial/gestion', [HistorialPedidosController::class, 'gestion'])->name('historial.gestion')->middleware('admin');
+Route::get('/historial/editar/{id}', [HistorialPedidosController::class, 'editarPedido'])->name('historial.editar')->middleware('admin');
+Route::post('/historial/editado', [HistorialPedidosController::class, 'editado'])->name('historial.editado')->middleware('admin');
 Route::post('/historial/estado-pedido', [HistorialPedidosController::class, 'estado'])->name('historial.estado')->middleware('admin');
 
 /* Buscador de pedidos */
